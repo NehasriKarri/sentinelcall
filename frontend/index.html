@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SentinelCall — is this call a scam?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="masthead">
+      <h1>SentinelCall</h1>
+      <div class="tagline">Read the call before it reads you.</div>
+    </header>
+
+    <p class="intro">
+      Paste what was said on a call, SMS, or WhatsApp message. SentinelCall checks it
+      against known scam patterns and reads it for context, then tells you plainly
+      whether to worry — and what to do next.
+    </p>
+
+    <div class="panel">
+      <label for="transcript">Transcript</label>
+      <textarea id="transcript" placeholder="e.g. This is calling from your bank. Your account will be blocked unless you share the OTP right now..."></textarea>
+
+      <div class="row">
+        <select id="sample-picker">
+          <option value="">Load a sample call…</option>
+        </select>
+        <button class="primary" id="analyze-btn">Analyze</button>
+        <span class="hint" id="status-hint"></span>
+      </div>
+      <p class="error-box" id="error-box"></p>
+    </div>
+
+    <div class="panel" id="result">
+      <div class="verdict-head">
+        <div class="score-dial" id="score-dial">--</div>
+        <div>
+          <p class="verdict-label" id="verdict-label">—</p>
+          <p class="verdict-sub" id="verdict-sub">—</p>
+        </div>
+      </div>
+
+      <p class="explanation" id="explanation"></p>
+
+      <div class="action-box" id="action-box"></div>
+
+      <div class="flags">
+        <h3>What was flagged</h3>
+        <div id="flag-list"></div>
+      </div>
+
+      <p class="score-breakdown" id="score-breakdown"></p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
