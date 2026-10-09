@@ -1104,3 +1104,184 @@ footer > span {
     scroll-behavior: auto !important;
   }
 }
+
+/* Opening sequence: a ringing phone settles behind a protective shield. */
+#opening-intro {
+  width: min(440px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 36px 30px 24px;
+  border: 1px solid #d8e4ce;
+  border-radius: 24px;
+  background: #f4f7ec;
+  color: var(--ink);
+  text-align: center;
+  box-shadow: 0 30px 100px #0d30234d;
+  overflow: auto;
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+#opening-intro::backdrop {
+  background: #183f36c7;
+  backdrop-filter: blur(8px);
+}
+#opening-intro[open] {
+  animation: intro-arrive 350ms ease both;
+}
+#opening-intro.is-leaving {
+  opacity: 0;
+  transform: translateY(-8px);
+  animation: none;
+}
+.intro-scene {
+  height: 185px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 18px;
+  width: 210px;
+}
+.intro-orbit {
+  position: absolute;
+  border: 1px solid #d5e2cc;
+  border-radius: 50%;
+  width: 154px;
+  height: 154px;
+}
+.orbit-two {
+  width: 195px;
+  height: 195px;
+  border-style: dashed;
+  opacity: 0.7;
+  animation: intro-orbit 2.1s ease-out both;
+}
+.intro-phone {
+  position: absolute;
+  width: 105px;
+  height: 145px;
+  animation: intro-ring 900ms ease-in-out both;
+  filter: drop-shadow(0 12px 10px #234c4312);
+}
+.intro-ring {
+  animation: intro-waves 900ms ease-in-out both;
+}
+.intro-shield {
+  position: absolute;
+  width: 70px;
+  height: 80px;
+  right: 28px;
+  bottom: 16px;
+  filter: drop-shadow(0 6px 8px #234c4320);
+  animation: intro-shield 650ms 650ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.intro-check {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: intro-check 450ms 1150ms ease-out forwards;
+}
+#opening-title {
+  font-size: 32px;
+  line-height: 1.2;
+  margin: 14px 0 12px;
+}
+#opening-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 22px;
+}
+.intro-eyebrow {
+  letter-spacing: 2px;
+}
+#skip-opening {
+  font-size: 12px;
+  background: transparent;
+  min-width: 110px;
+}
+.replay-opening {
+  font-size: 11px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  min-height: 44px;
+  justify-self: start;
+  grid-column: 1/-1;
+  grid-row: 2;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@keyframes intro-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes intro-ring {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  15%,
+  45% {
+    transform: rotate(-7deg);
+  }
+  30%,
+  60% {
+    transform: rotate(7deg);
+  }
+  80% {
+    transform: rotate(-2deg);
+  }
+}
+@keyframes intro-waves {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  25%,
+  65% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.2;
+  }
+}
+@keyframes intro-shield {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes intro-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes intro-orbit {
+  from {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  to {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #opening-intro {
+    display: none !important;
+  }
+  .replay-opening {
+    display: none;
+  }
+  .intro-check {
+    stroke-dashoffset: 0;
+  }
+}

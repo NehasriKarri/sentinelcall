@@ -18,6 +18,64 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <dialog
+      id="opening-intro"
+      aria-labelledby="opening-title"
+      aria-describedby="opening-subtitle"
+    >
+      <div class="intro-scene" aria-hidden="true">
+        <span class="intro-orbit orbit-one"></span
+        ><span class="intro-orbit orbit-two"></span>
+        <svg class="intro-phone" viewBox="0 0 120 160">
+          <rect
+            x="25"
+            y="8"
+            width="70"
+            height="140"
+            rx="18"
+            fill="#fffef9"
+            stroke="#acc4ae"
+            stroke-width="2"
+          />
+          <path
+            d="M47 20h26"
+            stroke="#b5c8b3"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+          <rect x="34" y="35" width="52" height="90" rx="9" fill="#e6eee0" />
+          <path
+            class="intro-ring"
+            d="M12 58Q0 80 12 102M108 58Q120 80 108 102"
+            fill="none"
+            stroke="#b9d2b8"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+        </svg>
+        <svg class="intro-shield" viewBox="0 0 64 72">
+          <path
+            d="M32 4 57 14v21c0 18-25 32-25 32S7 53 7 35V14Z"
+            fill="#2b6357"
+            stroke="#e7efdc"
+            stroke-width="2"
+          />
+          <path
+            class="intro-check"
+            d="m20 34 9 9 17-21"
+            fill="none"
+            stroke="#f4f6e9"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <span class="eyebrow intro-eyebrow">SentinelCall</span>
+      <h2 id="opening-title" data-i18n="openingHeading"></h2>
+      <p id="opening-subtitle" data-i18n="openingSub"></p>
+      <button id="skip-opening" data-i18n="skipOpening" autofocus></button>
+    </dialog>
     <a class="skip-link" href="#checker" data-i18n="skip"></a>
     <main class="wrap">
       <nav class="topbar" aria-label="SentinelCall">
@@ -292,6 +350,11 @@
         </article>
       </section>
       <footer>
+        <button
+          id="replay-opening"
+          class="replay-opening"
+          data-i18n="replayOpening"
+        ></button>
         <strong>SentinelCall.</strong>
         <p data-i18n="limitations"></p>
         <span data-i18n="footerNote"></span>
@@ -299,6 +362,7 @@
     </main>
     <script src="config.js"></script>
     <script src="samples.js"></script>
+    <script src="intro.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

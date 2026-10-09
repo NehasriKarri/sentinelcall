@@ -114,6 +114,10 @@ const copy = {
   },
 };
 Object.assign(copy.en, {
+  openingHeading: "A little pause. A lot of protection.",
+  openingSub: "Take a breath. Let’s look at it together.",
+  skipOpening: "Skip intro",
+  replayOpening: "Replay opening",
   skip: "Skip to message checker",
   eyebrow: "A LITTLE PAUSE. A LOT OF PROTECTION.",
   headline: "Trust your instincts. Check the message.",
@@ -184,6 +188,10 @@ Object.assign(copy.en, {
   unsaved: "This check was not saved.",
 });
 Object.assign(copy.hi, {
+  openingHeading: "थोड़ा ठहरें। ज्यादा सुरक्षित रहें।",
+  openingSub: "एक सांस लें। आइए साथ में जांचें।",
+  skipOpening: "परिचय छोड़ें",
+  replayOpening: "परिचय फिर देखें",
   skip: "संदेश जांच पर जाएं",
   eyebrow: "थोड़ा ठहरें। ज्यादा सुरक्षित रहें।",
   headline: "अपने मन की सुनें। संदेश जांचें।",
@@ -619,3 +627,5 @@ setLanguage("en");
 api("/health")
   .then(() => updateConnection("online"))
   .catch(() => updateConnection("disconnected"));
+
+window.SentinelIntro.start();

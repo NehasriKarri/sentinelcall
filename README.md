@@ -71,6 +71,10 @@ The evaluation data has 50 development examples and a separate 30-example synthe
 
 At threshold 65, the current offline holdout result is 11 true positives, 0 false positives, 4 false negatives, and 15 true negatives: precision 1.000, recall 0.733. Three missed scams are subtle prize scripts; one is a speech-error script. This is a small synthetic test, not a real-world performance estimate.
 
+## Opening animation
+
+A short phone-to-shield welcome plays once per tab (about 2.3 seconds). Skip it with the button or Escape; replay it from the footer. Both languages are supported. Reduced-motion preferences bypass the sequence, and a preference change during playback closes it immediately. Native dialog behavior keeps background controls inert and restores focus on dismissal. No audio or new dependency is used.
+
 ## Frontend assets and samples
 
 Two original illustrations are bundled as optimized JPEGs under `frontend/assets/` (about 353 KB total). Their final prompts and generation tool are documented in `frontend/assets/README.md`. No image CDN or frontend build is required. Fraunces and Work Sans load from Google Fonts with local serif/sans-serif fallbacks when offline.
