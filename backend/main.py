@@ -130,4 +130,6 @@ def sample(sample_id: str):
 
 @app.post("/analyze", response_model=AnalyzeResponse)
 def analyze_transcript(request: AnalyzeRequest):
-    return analyze(request.transcript, language_hint=request.language_hint)
+    return analyze(
+        request.transcript, use_llm=request.use_llm, language_hint=request.language_hint
+    )

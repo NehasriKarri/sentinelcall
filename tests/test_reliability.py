@@ -68,6 +68,8 @@ def test_blend(monkeypatch, llm_score):
             "llm_score": llm_score,
             "explanation": "Context",
             "recommended_action": "Verify",
+            "explanation_hi": "संदर्भ",
+            "recommended_action_hi": "सत्यापन करें",
         },
     )
     result = detector.analyze("OTP immediately")
@@ -124,6 +126,8 @@ def test_retry_and_configured_model(monkeypatch):
                         "llm_score": 50,
                         "explanation": "Context",
                         "recommended_action": "Verify",
+                        "explanation_hi": "संदर्भ",
+                        "recommended_action_hi": "सत्यापन करें",
                     }
                 )
             ),

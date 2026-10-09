@@ -14,6 +14,9 @@ class AnalyzeRequest(BaseModel):
         max_length=10000,
         description="Call or message transcript to analyze",
     )
+    use_llm: bool = Field(
+        True, strict=True, description="Allow this transcript to be sent to Groq"
+    )
     language_hint: Literal["en", "hi"] | None = Field(
         None, description="Optional language of the transcript, e.g. 'en', 'hi'"
     )
@@ -34,6 +37,11 @@ class FlaggedPhrase(BaseModel):
     reason: str
 
 
+class LocalizedExplanation(BaseModel):
+    explanation: str
+    recommended_action: str
+
+
 class AnalyzeResponse(BaseModel):
     risk_level: RiskLevel
     risk_score: int = Field(..., ge=0, le=100)
@@ -43,6 +51,17 @@ class AnalyzeResponse(BaseModel):
     recommended_action: str
     rule_score: int
     llm_score: int | None = None
+    llm_status: Literal[
+        "used",
+        "disabled",
+        "missing_key",
+        "invalid_model",
+        "unavailable",
+        "invalid_output",
+    ] = "disabled"
+    localized: dict[Literal["en", "hi"], LocalizedExplanation] = Field(
+        default_factory=dict
+    )
 
 
 class SampleTranscript(BaseModel):
