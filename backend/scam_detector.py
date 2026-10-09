@@ -77,7 +77,7 @@ ENGLISH_PATTERNS: dict[str, tuple[int, list[str]]] = {
     "payment_or_transfer_request": (
         25,
         [
-            r"transfer (the )?(money|amount|funds)",
+            r"transfer (the |your )?(money|amount|funds|savings)",
             r"pay (a |the )?(fine|fee|penalty)",
             r"google pay|gpay|phonepe|paytm|upi id",
             r"gift card",
@@ -100,7 +100,7 @@ ENGLISH_PATTERNS: dict[str, tuple[int, list[str]]] = {
     "secrecy_or_isolation": (
         15,
         [
-            r"do not (tell|inform|disclose)",
+            r"do not (tell|inform|disclose|disconnect|hang up)",
             r"keep this confidential",
             r"don'?t (hang up|disconnect)",
         ],
@@ -315,7 +315,16 @@ def llm_analysis(transcript: str, rule_result: RuleResult) -> dict:
                 },
                 timeout=(3, 10),
             )
-            if response.status_code == 404:
+            invalid_model = response.status_code == 404
+            if response.status_code == 400:
+                try:
+                    invalid_model = response.json().get("error", {}).get("code") in {
+                        "model_not_found",
+                        "model_decommissioned",
+                    }
+                except (ValueError, AttributeError):
+                    pass
+            if invalid_model:
                 raise ReasoningUnavailable(
                     "Groq model is invalid or unavailable. Check GROQ_MODEL."
                 )

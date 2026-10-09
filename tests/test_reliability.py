@@ -192,3 +192,20 @@ def test_rate_limit(client, monkeypatch):
 
 def test_body_limit(client):
     assert client.post("/analyze", content=b"x" * 128001).status_code == 413
+
+
+def test_provider_error_never_echoes_transcript_or_key(monkeypatch):
+    def fail(*args):
+        raise RuntimeError("PRIVATE_TRANSCRIPT PRIVATE_KEY")
+
+    monkeypatch.setattr(detector, "llm_analysis", fail)
+    result = detector.analyze("OTP")
+    assert "PRIVATE" not in result.explanation
+
+
+def test_decommissioned_model(monkeypatch):
+    monkeypatch.setenv("GROQ_API_KEY", "test-key")
+    r = response(400)
+    r.json.return_value = {"error": {"code": "model_decommissioned"}}
+    monkeypatch.setattr(detector.requests, "post", lambda *a, **kw: r)
+    assert "GROQ_MODEL" in detector.analyze("OTP").explanation

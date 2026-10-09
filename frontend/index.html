@@ -1,7 +1,126 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SentinelCall</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head>
-<body><main class="wrap"><header class="hero"><nav><strong>SentinelCall</strong><div role="group" aria-label="Language / भाषा"><button class="lang-btn" data-lang="en" aria-pressed="true">English</button><button class="lang-btn" data-lang="hi" aria-pressed="false">हिन्दी</button></div></nav><span class="phone" aria-hidden="true">☎</span><h1 data-i18n="headline"></h1><p data-i18n="intro"></p></header>
-<section class="panel"><label for="transcript" data-i18n="transcript"></label><textarea id="transcript" maxlength="10000" data-i18n-placeholder="placeholder"></textarea><p class="hint" data-i18n="privacy"></p><div class="row"><label class="sr-only" for="sample-picker" data-i18n="samples"></label><select id="sample-picker"></select><button id="record-btn" aria-pressed="false" data-i18n="record"></button><button class="primary" id="analyze-btn" data-i18n="analyze"></button></div><p id="status-hint" role="status"></p><p id="error-box" role="alert" hidden></p></section>
-<section class="panel" id="result" hidden><div class="verdict-head"><div class="gauge" aria-hidden="true"><svg viewBox="0 0 200 115"><path d="M15 100 A85 85 0 0 1 185 100" fill="none" stroke="#d4e3d8" stroke-width="18"/><path d="M15 100 A85 85 0 0 1 63 23" fill="none" stroke="#2b6357" stroke-width="18"/><path d="M63 23 A85 85 0 0 1 144 27" fill="none" stroke="#b78235" stroke-width="18"/><path d="M144 27 A85 85 0 0 1 185 100" fill="none" stroke="#ae5948" stroke-width="18"/><g id="gauge-needle"><path d="M100 100 L25 97 L100 94 Z" fill="#234c43"/><circle cx="100" cy="100" r="6" fill="#234c43"/></g></svg><strong id="score-dial">0</strong></div><div aria-live="polite" aria-atomic="true"><h2 id="verdict-label"></h2><p id="verdict-sub"></p></div></div><p id="explanation"></p><div class="action-box"><p id="action-box-text"></p></div><h3 data-i18n="highlight"></h3><div id="highlighted-transcript" class="transcript-preview"></div><h3 data-i18n="flags"></h3><div id="flag-list"></div><p id="score-breakdown" class="hint"></p><aside id="report-helper" hidden><h3 data-i18n="report"></h3><p data-i18n="reportText"></p><a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer" data-i18n="portal"></a> · <a href="tel:1930" data-i18n="helpline"></a></aside></section>
-<section class="panel"><div class="row history-head"><h2 data-i18n="history"></h2><button id="clear-history" data-i18n="clear"></button></div><p class="hint" data-i18n="historyPrivacy"></p><div id="history-list"></div></section><footer data-i18n="limitations"></footer></main><script src="config.js"></script><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SentinelCall</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="hero">
+        <nav>
+          <strong>SentinelCall</strong>
+          <div role="group" aria-label="Language / भाषा">
+            <button class="lang-btn" data-lang="en" aria-pressed="true">
+              English</button
+            ><button class="lang-btn" data-lang="hi" aria-pressed="false">
+              हिन्दी
+            </button>
+          </div>
+        </nav>
+        <span class="phone" aria-hidden="true">☎</span>
+        <h1 data-i18n="headline"></h1>
+        <p data-i18n="intro"></p>
+      </header>
+      <section class="panel">
+        <label for="transcript" data-i18n="transcript"></label
+        ><textarea
+          id="transcript"
+          maxlength="10000"
+          data-i18n-placeholder="placeholder"
+        ></textarea>
+        <p class="hint" data-i18n="privacy"></p>
+        <div class="row">
+          <label class="sr-only" for="sample-picker" data-i18n="samples"></label
+          ><select id="sample-picker"></select
+          ><button
+            id="record-btn"
+            aria-pressed="false"
+            data-i18n="record"
+          ></button
+          ><button
+            class="primary"
+            id="analyze-btn"
+            data-i18n="analyze"
+          ></button>
+        </div>
+        <p id="status-hint" role="status"></p>
+        <p id="error-box" role="alert" hidden></p>
+      </section>
+      <section class="panel" id="result" hidden>
+        <div class="verdict-head">
+          <div class="gauge" aria-hidden="true">
+            <svg viewBox="0 0 200 115">
+              <path
+                d="M15 100 A85 85 0 0 1 185 100"
+                fill="none"
+                stroke="#d4e3d8"
+                stroke-width="18"
+              />
+              <path
+                d="M15 100 A85 85 0 0 1 63 23"
+                fill="none"
+                stroke="#2b6357"
+                stroke-width="18"
+              />
+              <path
+                d="M63 23 A85 85 0 0 1 144 27"
+                fill="none"
+                stroke="#b78235"
+                stroke-width="18"
+              />
+              <path
+                d="M144 27 A85 85 0 0 1 185 100"
+                fill="none"
+                stroke="#ae5948"
+                stroke-width="18"
+              />
+              <g id="gauge-needle">
+                <path d="M100 100 L25 97 L100 94 Z" fill="#234c43" />
+                <circle cx="100" cy="100" r="6" fill="#234c43" />
+              </g></svg
+            ><strong id="score-dial">0</strong>
+          </div>
+          <div aria-live="polite" aria-atomic="true">
+            <h2 id="verdict-label"></h2>
+            <p id="verdict-sub"></p>
+          </div>
+        </div>
+        <p id="explanation"></p>
+        <div class="action-box"><p id="action-box-text"></p></div>
+        <h3 data-i18n="highlight"></h3>
+        <div id="highlighted-transcript" class="transcript-preview"></div>
+        <h3 data-i18n="flags"></h3>
+        <div id="flag-list"></div>
+        <p id="score-breakdown" class="hint"></p>
+        <aside id="report-helper" hidden>
+          <h3 data-i18n="report"></h3>
+          <p data-i18n="reportText"></p>
+          <a
+            href="https://cybercrime.gov.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-i18n="portal"
+          ></a>
+          · <a href="tel:1930" data-i18n="helpline"></a>
+        </aside>
+      </section>
+      <section class="panel">
+        <div class="row history-head">
+          <h2 data-i18n="history"></h2>
+          <button id="clear-history" data-i18n="clear"></button>
+        </div>
+        <p class="hint" data-i18n="historyPrivacy"></p>
+        <div id="history-list"></div>
+      </section>
+      <footer data-i18n="limitations"></footer>
+    </main>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
