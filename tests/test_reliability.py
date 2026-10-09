@@ -19,7 +19,7 @@ def test_normalization_and_original_spans(text):
     result = detector.rule_based_score("Share " + text + " immediately")
     flag = next(f for f in result.flagged if f.category == "otp_or_pin_request")
     assert flag.phrase == text.rstrip(".")
-    assert ("Share " + text + " immediately")[flag.start : flag.end] == text
+    assert ("Share " + text + " immediately")[flag.start : flag.end] == flag.phrase
 
 
 @pytest.mark.parametrize("category", list(detector.RULE_CONFIG))
