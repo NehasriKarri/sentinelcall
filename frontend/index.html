@@ -3,56 +3,189 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SentinelCall</title>
+    <meta name="theme-color" content="#2b6357" />
+    <meta
+      name="description"
+      content="Pause before you trust the call. Check messages for scam signals in English and Hindi with SentinelCall."
+    />
+    <title>SentinelCall — A little pause. A lot of protection.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <a class="skip-link" href="#checker" data-i18n="skip"></a>
     <main class="wrap">
-      <header class="hero">
-        <nav>
-          <strong>SentinelCall</strong>
-          <div role="group" aria-label="Language / भाषा">
+      <nav class="topbar" aria-label="SentinelCall">
+        <a class="brand" href="#" aria-label="SentinelCall"
+          ><span class="brand-symbol" aria-hidden="true"
+            ><svg viewBox="0 0 32 32">
+              <path
+                d="M16 3 27 7v9c0 7-11 13-11 13S5 23 5 16V7Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <path
+                d="m11 16 3 3 7-8"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              /></svg></span
+          >SentinelCall<span class="brand-dot">.</span></a
+        >
+        <div class="nav-actions">
+          <span id="connection-status" class="connection" role="status"></span>
+          <div
+            class="language-switch"
+            role="group"
+            aria-label="Language / भाषा"
+          >
             <button class="lang-btn" data-lang="en" aria-pressed="true">
-              English</button
+              EN</button
             ><button class="lang-btn" data-lang="hi" aria-pressed="false">
               हिन्दी
             </button>
           </div>
-        </nav>
-        <span class="phone" aria-hidden="true">☎</span>
-        <h1 data-i18n="headline"></h1>
-        <p data-i18n="intro"></p>
-      </header>
-      <section class="panel">
-        <label for="transcript" data-i18n="transcript"></label
-        ><textarea
-          id="transcript"
-          maxlength="10000"
-          data-i18n-placeholder="placeholder"
-        ></textarea>
-        <p class="hint" data-i18n="privacy"></p>
-        <div class="row">
-          <label class="sr-only" for="sample-picker" data-i18n="samples"></label
-          ><select id="sample-picker"></select
-          ><button
-            id="record-btn"
-            aria-pressed="false"
-            data-i18n="record"
-          ></button
-          ><button
-            class="primary"
-            id="analyze-btn"
-            data-i18n="analyze"
-          ></button>
         </div>
-        <p id="status-hint" role="status"></p>
-        <p id="error-box" role="alert" hidden></p>
-      </section>
-      <section class="panel" id="result" hidden>
+      </nav>
+      <header class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow" data-i18n="eyebrow"></span>
+          <h1 data-i18n="headline"></h1>
+          <p data-i18n="intro"></p>
+          <a class="hero-cta" href="#checker"
+            ><span data-i18n="heroCta"></span
+            ><span aria-hidden="true">↗</span></a
+          >
+          <div class="hero-proof">
+            <span data-i18n="proofOne"></span><span data-i18n="proofTwo"></span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img
+            src="assets/sentinel-hero.jpg"
+            width="1672"
+            height="941"
+            alt=""
+            fetchpriority="high"
+          />
+          <div class="visual-note">
+            <span class="note-icon" aria-hidden="true">✓</span>
+            <div>
+              <strong data-i18n="visualTitle"></strong
+              ><span data-i18n="visualText"></span>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow" data-i18n="checkerEyebrow"></span>
+          <h2 data-i18n="checkerTitle"></h2>
+        </div>
+        <span class="section-note" data-i18n="checkerNote"></span>
+      </div>
+      <div class="workspace">
+        <section
+          class="panel checker"
+          id="checker"
+          tabindex="-1"
+          aria-labelledby="transcript-label"
+        >
+          <div class="field-heading">
+            <label
+              id="transcript-label"
+              for="transcript"
+              data-i18n="transcript"
+            ></label
+            ><span id="character-count" class="hint">0 / 10,000</span>
+          </div>
+          <textarea
+            id="transcript"
+            maxlength="10000"
+            data-i18n-placeholder="placeholder"
+            aria-describedby="privacy-note"
+          ></textarea>
+          <div class="input-tools">
+            <button
+              id="record-btn"
+              aria-pressed="false"
+              data-i18n="record"
+            ></button>
+            <div class="sample-control">
+              <label
+                class="sr-only"
+                for="sample-picker"
+                data-i18n="samples"
+              ></label
+              ><select id="sample-picker"></select>
+            </div>
+          </div>
+          <fieldset class="privacy-options">
+            <legend data-i18n="yourChoice"></legend>
+            <label class="check-option"
+              ><input type="checkbox" id="use-ai" /><span
+                ><strong data-i18n="useAi"></strong
+                ><small data-i18n="aiConsent"></small></span></label
+            ><label class="check-option"
+              ><input type="checkbox" id="save-check" /><span
+                ><strong data-i18n="saveCheck"></strong
+                ><small data-i18n="saveConsent"></small></span
+            ></label>
+          </fieldset>
+          <button class="primary analyze" id="analyze-btn">
+            <span data-i18n="analyze"></span><span aria-hidden="true">↗</span>
+          </button>
+          <p id="privacy-note" class="privacy-note" data-i18n="privacy"></p>
+          <p id="status-hint" role="status"></p>
+          <p id="error-box" role="alert" hidden></p>
+        </section>
+        <aside class="guide panel">
+          <img
+            src="assets/sentinel-guide.jpg"
+            alt=""
+            width="1536"
+            height="1024"
+            loading="lazy"
+          /><span class="eyebrow" data-i18n="guideEyebrow"></span>
+          <h2 data-i18n="guideTitle"></h2>
+          <p data-i18n="guideIntro"></p>
+          <ol class="guide-steps">
+            <li>
+              <strong data-i18n="stepOne"></strong
+              ><span data-i18n="stepOneText"></span>
+            </li>
+            <li>
+              <strong data-i18n="stepTwo"></strong
+              ><span data-i18n="stepTwoText"></span>
+            </li>
+            <li>
+              <strong data-i18n="stepThree"></strong
+              ><span data-i18n="stepThreeText"></span>
+            </li>
+          </ol>
+          <div class="guide-foot">
+            <span aria-hidden="true">◎</span><span data-i18n="guideFoot"></span>
+          </div>
+        </aside>
+      </div>
+      <section
+        class="panel result-panel"
+        id="result"
+        hidden
+        tabindex="-1"
+        aria-labelledby="verdict-label"
+      >
+        <div class="result-top">
+          <span class="eyebrow" data-i18n="resultTitle"></span
+          ><span class="mode-badge" id="analysis-mode"></span>
+        </div>
         <div class="verdict-head">
           <div class="gauge" aria-hidden="true">
             <svg viewBox="0 0 200 115">
@@ -60,67 +193,112 @@
                 d="M15 100 A85 85 0 0 1 185 100"
                 fill="none"
                 stroke="#d4e3d8"
-                stroke-width="18"
+                stroke-width="15"
+                stroke-linecap="round"
               />
               <path
                 d="M15 100 A85 85 0 0 1 63 23"
                 fill="none"
                 stroke="#2b6357"
-                stroke-width="18"
+                stroke-width="15"
               />
               <path
                 d="M63 23 A85 85 0 0 1 144 27"
                 fill="none"
                 stroke="#b78235"
-                stroke-width="18"
+                stroke-width="15"
               />
               <path
                 d="M144 27 A85 85 0 0 1 185 100"
                 fill="none"
                 stroke="#ae5948"
-                stroke-width="18"
+                stroke-width="15"
               />
               <g id="gauge-needle">
                 <path d="M100 100 L25 97 L100 94 Z" fill="#234c43" />
                 <circle cx="100" cy="100" r="6" fill="#234c43" />
               </g></svg
-            ><strong id="score-dial">0</strong>
+            ><strong id="score-dial">0</strong
+            ><span class="hint" data-i18n="heuristic"></span>
           </div>
-          <div aria-live="polite" aria-atomic="true">
-            <h2 id="verdict-label"></h2>
-            <p id="verdict-sub"></p>
+          <div class="verdict-copy">
+            <div aria-live="polite" aria-atomic="true">
+              <h2 id="verdict-label"></h2>
+              <p id="verdict-sub"></p>
+            </div>
+            <p id="explanation"></p>
           </div>
         </div>
-        <p id="explanation"></p>
-        <div class="action-box"><p id="action-box-text"></p></div>
-        <h3 data-i18n="highlight"></h3>
-        <div id="highlighted-transcript" class="transcript-preview"></div>
-        <h3 data-i18n="flags"></h3>
-        <div id="flag-list"></div>
+        <div class="action-box">
+          <span class="action-icon" aria-hidden="true">↗</span>
+          <div>
+            <strong data-i18n="nextStep"></strong>
+            <p id="action-box-text"></p>
+          </div>
+        </div>
+        <p id="analysis-note" class="hint"></p>
+        <div class="result-details">
+          <div>
+            <h3 data-i18n="highlight"></h3>
+            <div id="highlighted-transcript" class="transcript-preview"></div>
+          </div>
+          <div>
+            <h3 data-i18n="flags"></h3>
+            <div id="flag-list"></div>
+          </div>
+        </div>
         <p id="score-breakdown" class="hint"></p>
+        <p id="save-status" class="hint" role="status"></p>
         <aside id="report-helper" hidden>
           <h3 data-i18n="report"></h3>
           <p data-i18n="reportText"></p>
-          <a
-            href="https://cybercrime.gov.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-i18n="portal"
-          ></a>
-          · <a href="tel:1930" data-i18n="helpline"></a>
+          <div class="report-links">
+            <a
+              href="https://cybercrime.gov.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="portal"
+            ></a
+            ><a href="tel:1930" data-i18n="helpline"></a>
+          </div>
         </aside>
       </section>
-      <section class="panel">
+      <section class="panel history-panel">
         <div class="row history-head">
-          <h2 data-i18n="history"></h2>
+          <div>
+            <span class="eyebrow" data-i18n="onlyYours"></span>
+            <h2 data-i18n="history"></h2>
+          </div>
           <button id="clear-history" data-i18n="clear"></button>
         </div>
         <p class="hint" data-i18n="historyPrivacy"></p>
         <div id="history-list"></div>
       </section>
-      <footer data-i18n="limitations"></footer>
+      <section class="principles" aria-label="SentinelCall">
+        <article>
+          <span class="principle-icon" aria-hidden="true">01</span>
+          <h3 data-i18n="principleOne"></h3>
+          <p data-i18n="principleOneText"></p>
+        </article>
+        <article>
+          <span class="principle-icon" aria-hidden="true">02</span>
+          <h3 data-i18n="principleTwo"></h3>
+          <p data-i18n="principleTwoText"></p>
+        </article>
+        <article>
+          <span class="principle-icon" aria-hidden="true">03</span>
+          <h3 data-i18n="principleThree"></h3>
+          <p data-i18n="principleThreeText"></p>
+        </article>
+      </section>
+      <footer>
+        <strong>SentinelCall.</strong>
+        <p data-i18n="limitations"></p>
+        <span data-i18n="footerNote"></span>
+      </footer>
     </main>
     <script src="config.js"></script>
+    <script src="samples.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
