@@ -1,0 +1,272 @@
+[
+  {
+    "id": "holdout-001",
+    "language": "en",
+    "label": "clean",
+    "transcript": "Your login code is 584921. It expires in five minutes.",
+    "scenario": "code_notification",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-002",
+    "language": "en",
+    "label": "clean",
+    "transcript": "Our security team will never ask you to reveal your one time password.",
+    "scenario": "safety_advice",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-003",
+    "language": "en",
+    "label": "clean",
+    "transcript": "Pay your electricity bill through the official app whenever convenient.",
+    "scenario": "routine_payment",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-004",
+    "language": "en",
+    "label": "clean",
+    "transcript": "The news says police arrested the suspects yesterday.",
+    "scenario": "news_reference",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-005",
+    "language": "en",
+    "label": "clean",
+    "transcript": "Please call the police department to report the stolen bicycle.",
+    "scenario": "authority_reference",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-006",
+    "language": "en",
+    "label": "clean",
+    "transcript": "Do not pay a processing fee to callers claiming to offer prizes.",
+    "scenario": "safety_advice",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-007",
+    "language": "en",
+    "label": "scam",
+    "transcript": "This is the customs department. Pay a refundable deposit immediately or face legal action.",
+    "scenario": "courier",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-008",
+    "language": "en",
+    "label": "scam",
+    "transcript": "TRAI will disconnect your number. Share your OTP right now. Do not tell anyone.",
+    "scenario": "impersonation",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-009",
+    "language": "en",
+    "label": "scam",
+    "transcript": "I am from the reserve bank. Transfer your funds within 10 minutes. A warrant is pending.",
+    "scenario": "threat",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-010",
+    "language": "en",
+    "label": "scam",
+    "transcript": "Congratulations! To unlock your reward, purchase gift cards and read their codes to me.",
+    "scenario": "subtle_prize",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-011",
+    "language": "en",
+    "label": "scam",
+    "transcript": "Bank verification: send the o t p immediately or your account will be suspended.",
+    "scenario": "speech_error",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-012",
+    "language": "en",
+    "label": "scam",
+    "transcript": "Never share bank codes, but provide your card number right now to avoid arrest.",
+    "scenario": "mixed_advice",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-013",
+    "language": "hi",
+    "label": "clean",
+    "transcript": "आपका ऑर्डर कल पहुंचेगा। धन्यवाद।",
+    "scenario": "delivery",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-014",
+    "language": "hi",
+    "label": "clean",
+    "transcript": "अपना पिन किसी को न दें। सुरक्षित रहें।",
+    "scenario": "safety_advice",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-015",
+    "language": "hi",
+    "label": "clean",
+    "transcript": "कृपया आधिकारिक वेबसाइट से अपने बिल का भुगतान करें।",
+    "scenario": "routine_payment",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-016",
+    "language": "hi",
+    "label": "clean",
+    "transcript": "कल शाम परिवार के साथ बात करेंगे।",
+    "scenario": "conversation",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-017",
+    "language": "hi",
+    "label": "clean",
+    "transcript": "ओटीपी दस मिनट तक मान्य है।",
+    "scenario": "code_notification",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-018",
+    "language": "hi",
+    "label": "scam",
+    "transcript": "कस्टम विभाग से हैं। अभी शुल्क जमा करो। कानूनी कार्रवाई होगी।",
+    "scenario": "courier",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-019",
+    "language": "hi",
+    "label": "scam",
+    "transcript": "सीबीआई से बोल रहे हैं। ओ टी पी बताओ तुरंत। किसी को मत बताना।",
+    "scenario": "speech_error",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-020",
+    "language": "hi",
+    "label": "scam",
+    "transcript": "आरबीआई अधिकारी हूं। अभी पैसे भेजो नहीं तो खाता बंद होगा।",
+    "scenario": "impersonation",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-021",
+    "language": "hi",
+    "label": "scam",
+    "transcript": "आपका इनाम तैयार है। पहले छोटा भुगतान करके लिंक खोलें।",
+    "scenario": "subtle_prize",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-022",
+    "language": "hi",
+    "label": "scam",
+    "transcript": "ओटीपी न दें, लेकिन पिन बताओ अभी। वारंट जारी है।",
+    "scenario": "mixed_advice",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-023",
+    "language": "hinglish",
+    "label": "clean",
+    "transcript": "Aapki appointment Monday ko confirm hai.",
+    "scenario": "appointment",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-024",
+    "language": "hinglish",
+    "label": "clean",
+    "transcript": "OTP kisi ko mat batao. Bank kabhi nahi poochega.",
+    "scenario": "safety_advice",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-025",
+    "language": "hinglish",
+    "label": "clean",
+    "transcript": "PhonePe ka cashback aa gaya, app me dekh lena.",
+    "scenario": "routine_payment",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-026",
+    "language": "hinglish",
+    "label": "clean",
+    "transcript": "Police station ka address official website par hai.",
+    "scenario": "authority_reference",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-027",
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "police se hoon. Jaldi paisa transfer karo, arrest ho jaoge.",
+    "scenario": "impersonation",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-028",
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "otp batao abhi warna khata band. kisi ko mat batana.",
+    "scenario": "threat",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-029",
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "customs se call hai. paisa transfer karo turant. Giraftar ho jaoge.",
+    "scenario": "courier",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  },
+  {
+    "id": "holdout-030",
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "Aap jeet gaye ho, reward lene ke liye chhota recharge kar do.",
+    "scenario": "subtle_prize",
+    "split": "heldout",
+    "source": "handwritten synthetic"
+  }
+]

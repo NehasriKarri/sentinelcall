@@ -13,4 +13,6 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: pip install -r requirements.txt
       - run: pytest -q
+      - run: python scripts/sync_samples.py --check
       - run: python evaluation/evaluate.py
+      - run: python evaluation/evaluate.py --split development

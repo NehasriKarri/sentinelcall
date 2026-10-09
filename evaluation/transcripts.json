@@ -2,126 +2,451 @@
   {
     "language": "en",
     "label": "scam",
-    "transcript": "This is Officer Sharma from Cyber Crime Branch. Your Aadhaar number has been used in a money laundering case. You are under digital arrest. Do not disconnect this call or inform anyone, including your family. To avoid arrest, you must transfer your savings to a government verification account within 30 minutes for verification. Share the OTP sent to your phone to proceed."
+    "transcript": "This is Officer Sharma from Cyber Crime Branch. Your Aadhaar number has been used in a money laundering case. You are under digital arrest. Do not disconnect this call or inform anyone, including your family. To avoid arrest, you must transfer your savings to a government verification account within 30 minutes for verification. Share the OTP sent to your phone to proceed.",
+    "id": "dev-001",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "scam",
-    "transcript": "Sir, this is calling from your bank's KYC department. Your account will be blocked within 2 hours if you do not update your KYC right now. Please share the OTP you just received and your debit card number so I can complete the update for you immediately."
+    "transcript": "Sir, this is calling from your bank's KYC department. Your account will be blocked within 2 hours if you do not update your KYC right now. Please share the OTP you just received and your debit card number so I can complete the update for you immediately.",
+    "id": "dev-002",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "scam",
-    "transcript": "Hello, this is FedEx customer service. A parcel under your name containing illegal items was intercepted by customs. To avoid legal action and a case being filed, you need to pay a processing fee of 2000 rupees via Google Pay right now. This is urgent, please do not hang up."
+    "transcript": "Hello, this is FedEx customer service. A parcel under your name containing illegal items was intercepted by customs. To avoid legal action and a case being filed, you need to pay a processing fee of 2000 rupees via Google Pay right now. This is urgent, please do not hang up.",
+    "id": "dev-003",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "clean",
-    "transcript": "Hi, this is Ramesh from the delivery service. I'm outside your building with your order, but the gate code isn't working. Could you come down or share the correct code? I'll wait five minutes."
+    "transcript": "Hi, this is Ramesh from the delivery service. I'm outside your building with your order, but the gate code isn't working. Could you come down or share the correct code? I'll wait five minutes.",
+    "id": "dev-004",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "clean",
-    "transcript": "Good afternoon, this is your bank calling about the credit card application you submitted last week. We need to confirm your current employer name and monthly income to proceed. You're welcome to call us back on the number printed on your card if you'd like to verify this call first."
+    "transcript": "Good afternoon, this is your bank calling about the credit card application you submitted last week. We need to confirm your current employer name and monthly income to proceed. You're welcome to call us back on the number printed on your card if you'd like to verify this call first.",
+    "id": "dev-005",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hi",
     "label": "scam",
-    "transcript": "पुलिस से बोल रहे हैं। तुरंत पैसे भेजो नहीं तो गिरफ्तार हो जाओगे। किसी को मत बताना।"
+    "transcript": "पुलिस से बोल रहे हैं। तुरंत पैसे भेजो नहीं तो गिरफ्तार हो जाओगे। किसी को मत बताना।",
+    "id": "dev-006",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hi",
     "label": "scam",
-    "transcript": "ओ टी पी बताओ अभी नहीं तो खाता बंद हो जाएगा।"
+    "transcript": "ओ टी पी बताओ अभी नहीं तो खाता बंद हो जाएगा।",
+    "id": "dev-007",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hi",
     "label": "scam",
-    "transcript": "सीबीआई से हैं। जुर्माना दो अभी। वारंट है।"
+    "transcript": "सीबीआई से हैं। जुर्माना दो अभी। वारंट है।",
+    "id": "dev-008",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hi",
     "label": "scam",
-    "transcript": "कस्टम विभाग से कॉल है। तुरंत शुल्क दो। कानूनी कार्रवाई होगी।"
+    "transcript": "कस्टम विभाग से कॉल है। तुरंत शुल्क दो। कानूनी कार्रवाई होगी।",
+    "id": "dev-009",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hi",
     "label": "scam",
-    "transcript": "पिन बताओ अभी। गुप्त रखो। पैसे भेजो।"
+    "transcript": "पिन बताओ अभी। गुप्त रखो। पैसे भेजो।",
+    "id": "dev-010",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hinglish",
     "label": "scam",
-    "transcript": "police se bol rahe hain paisa transfer karo abhi arrest ho jaoge"
+    "transcript": "police se bol rahe hain paisa transfer karo abhi arrest ho jaoge",
+    "id": "dev-011",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hinglish",
     "label": "scam",
-    "transcript": "otp batao jaldi khata band ho jayega kisi ko mat batana"
+    "transcript": "otp batao jaldi khata band ho jayega kisi ko mat batana",
+    "id": "dev-012",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hinglish",
     "label": "scam",
-    "transcript": "cbi se hain jurmana do turant arrest ho jaoge"
+    "transcript": "cbi se hain jurmana do turant arrest ho jaoge",
+    "id": "dev-013",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "scam",
-    "transcript": "Share o.t.p. immediately or your account will be blocked."
+    "transcript": "Share o.t.p. immediately or your account will be blocked.",
+    "id": "dev-014",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "scam",
-    "transcript": "Pay a fine right now or face arrest. Do not tell anyone."
+    "transcript": "Pay a fine right now or face arrest. Do not tell anyone.",
+    "id": "dev-015",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hi",
     "label": "clean",
-    "transcript": "आपका सामान पहुंच गया है। कृपया नीचे आ जाएं।"
+    "transcript": "आपका सामान पहुंच गया है। कृपया नीचे आ जाएं।",
+    "id": "dev-016",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hi",
     "label": "clean",
-    "transcript": "कल दोपहर खाने पर मिलते हैं।"
+    "transcript": "कल दोपहर खाने पर मिलते हैं।",
+    "id": "dev-017",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hi",
     "label": "clean",
-    "transcript": "आपके आवेदन की स्थिति वेबसाइट पर देख सकते हैं।"
+    "transcript": "आपके आवेदन की स्थिति वेबसाइट पर देख सकते हैं।",
+    "id": "dev-018",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hinglish",
     "label": "clean",
-    "transcript": "kal lunch par milte hain"
+    "transcript": "kal lunch par milte hain",
+    "id": "dev-019",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hinglish",
     "label": "clean",
-    "transcript": "aapka parcel gate par hai neeche aa jaiye"
+    "transcript": "aapka parcel gate par hai neeche aa jaiye",
+    "id": "dev-020",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "clean",
-    "transcript": "Your appointment is confirmed for Monday."
+    "transcript": "Your appointment is confirmed for Monday.",
+    "id": "dev-021",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "clean",
-    "transcript": "Never share your OTP with anyone."
+    "transcript": "Never share your OTP with anyone.",
+    "id": "dev-022",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "hi",
     "label": "clean",
-    "transcript": "किसी को अपना ओटीपी न दें।"
+    "transcript": "किसी को अपना ओटीपी न दें।",
+    "id": "dev-023",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "clean",
-    "transcript": "Please call the number on your card to verify."
+    "transcript": "Please call the number on your card to verify.",
+    "id": "dev-024",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
   },
   {
     "language": "en",
     "label": "clean",
-    "transcript": "Your refund will arrive in five business days."
+    "transcript": "Your refund will arrive in five business days.",
+    "id": "dev-025",
+    "split": "development",
+    "source": "handwritten synthetic",
+    "scenario": "baseline"
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "Your PIN was changed successfully. Contact us if this was not you.",
+    "scenario": "notification",
+    "id": "dev-026",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "Never share your OTP. Our bank will never ask for your PIN.",
+    "scenario": "safety_advice",
+    "id": "dev-027",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "We accept Google Pay at the counter.",
+    "scenario": "routine_payment",
+    "id": "dev-028",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "Please report suspicious calls to your local police station.",
+    "scenario": "authority_reference",
+    "id": "dev-029",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "There is no such thing as digital arrest. This is a scam awareness message.",
+    "scenario": "awareness",
+    "id": "dev-030",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "This is the RBI. Share your PIN immediately or your account will be blocked.",
+    "scenario": "impersonation",
+    "id": "dev-031",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "Cyber crime branch here. Transfer your savings right now. Do not inform anyone.",
+    "scenario": "isolation",
+    "id": "dev-032",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "Pay a fine immediately. A warrant has been issued for your arrest.",
+    "scenario": "threat",
+    "id": "dev-033",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "Never share your OTP, but tell me your PIN immediately or face legal action.",
+    "scenario": "mixed_advice",
+    "id": "dev-034",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "Share the oh tee pee right now. Pay a processing fee or your account will be blocked.",
+    "scenario": "speech_error",
+    "id": "dev-035",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hi",
+    "label": "clean",
+    "transcript": "आपका पिन बदल गया है। आपने नहीं बदला तो बैंक से संपर्क करें।",
+    "scenario": "notification",
+    "id": "dev-036",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hi",
+    "label": "clean",
+    "transcript": "ओटीपी किसी को मत बताओ। बैंक पिन नहीं मांगते।",
+    "scenario": "safety_advice",
+    "id": "dev-037",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hi",
+    "label": "clean",
+    "transcript": "कल दस बजे आपकी डॉक्टर से मुलाकात है।",
+    "scenario": "appointment",
+    "id": "dev-038",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hi",
+    "label": "clean",
+    "transcript": "सामान लेने के लिए नीचे आ जाएं।",
+    "scenario": "delivery",
+    "id": "dev-039",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hi",
+    "label": "scam",
+    "transcript": "आरबीआई से बोल रहा हूं। अभी ओटीपी बताओ वरना खाता बंद होगा।",
+    "scenario": "impersonation",
+    "id": "dev-040",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hi",
+    "label": "scam",
+    "transcript": "पुलिस से हैं। पैसे भेजो तुरंत। किसी को मत बताना।",
+    "scenario": "isolation",
+    "id": "dev-041",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hi",
+    "label": "scam",
+    "transcript": "सीबीआई का वारंट है। अभी जुर्माना दो। गिरफ्तार हो जाओगे।",
+    "scenario": "threat",
+    "id": "dev-042",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hi",
+    "label": "scam",
+    "transcript": "ओटीपी मत बताओ। पिन बताओ अभी। कानूनी कार्रवाई होगी।",
+    "scenario": "mixed_advice",
+    "id": "dev-043",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hinglish",
+    "label": "clean",
+    "transcript": "Bank kabhi OTP nahi maangta. OTP kisi ko mat batana.",
+    "scenario": "safety_advice",
+    "id": "dev-044",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hinglish",
+    "label": "clean",
+    "transcript": "Kal aapka parcel aa jayega.",
+    "scenario": "delivery",
+    "id": "dev-045",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hinglish",
+    "label": "clean",
+    "transcript": "Lunch ke baad milte hain.",
+    "scenario": "conversation",
+    "id": "dev-046",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "police se bol raha hoon. Abhi paisa transfer karo. Arrest ho jaoge.",
+    "scenario": "impersonation",
+    "id": "dev-047",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "cbi se hain. otp batao jaldi. Kisi ko mat batana.",
+    "scenario": "isolation",
+    "id": "dev-048",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "otp mat batao, lekin pin batao abhi. Khata band ho jayega.",
+    "scenario": "mixed_advice",
+    "id": "dev-049",
+    "split": "development",
+    "source": "handwritten synthetic"
+  },
+  {
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "rbi se hain. paisa transfer karo turant. Giraftar ho jaoge.",
+    "scenario": "threat",
+    "id": "dev-050",
+    "split": "development",
+    "source": "handwritten synthetic"
   }
 ]
