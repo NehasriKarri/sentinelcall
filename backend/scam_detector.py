@@ -232,6 +232,9 @@ SENSITIVE_REQUEST = re.compile(
 )
 PROTECTIVE_ADVICE = re.compile(
     r"(?:never|do not|don't|dont)\s+(?:ever\s+)?(?:share|tell|send|give|reveal|transfer|pay|disclose)|"
+    r"(?:i |we )?(?:refused|declined) to (?:share|send|pay|transfer|give)|"
+    r"(?:i|we) (?:will not|won't|did not|didn't) (?:share|send|pay|transfer|give)|"
+    r"मैं[^।.!?]{0,45}(?:नहीं|नही) (?:दूंगा|दूंगी|दिया|भेजूंगा|भेजूंगी)|"
     r"(?:won't|will not|never)\s+ask|(?:not|isn't|is not)\s+(?:a\s+)?(?:real\s+)?digital arrest|"
     r"(?<![\w\u0900-\u097f])(?:मत|न)\s*(?:दें|दो|बताओ|बताएं|भेजो|भेजें|करो|करें)|"
     r"(?:नहीं|नही)\s*(?:मांगते|मांगेगा|पूछते)|(?:mat|nahi)\s+(?:bata|bhej|do|kar|share)|"

@@ -121,3 +121,23 @@ def test_api_requires_explicit_ai_opt_in(monkeypatch):
     result = client.post("/analyze", json={"transcript": "Hello", "use_llm": True})
     assert result.json()["llm_status"] == "used"
     provider.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Customer: I refused to share my OTP immediately.\nCaller: Have a nice day.",
+        "Recipient: I will not transfer money immediately.\nAgent: That is fine.",
+        "ग्राहक: मैं अपना पिन नहीं दूंगा।\nकॉलर: ठीक है।",
+    ],
+)
+def test_speaker_refusal_is_not_a_request(text):
+    assert detector.rule_based_score(text).score == 0
+
+
+def test_speaker_refusal_does_not_erase_caller_demand():
+    result = detector.rule_based_score(
+        "Caller: Share your OTP immediately.\nCustomer: I refused to share my OTP."
+    )
+    assert result.score == 50
+    assert all(f.start < 39 for f in result.flagged)
