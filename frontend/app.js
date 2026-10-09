@@ -115,7 +115,9 @@ const copy = {
 };
 Object.assign(copy.en, {
   openingHeading: "A little pause. A lot of protection.",
-  openingSub: "Take a breath. Let’s look at it together.",
+  introEdition: "THE CLARITY EDIT",
+  introMeta: "PAUSE / CHECK / PROTECT",
+  openingSub: "Clarity before the conversation.",
   skipOpening: "Skip intro",
   replayOpening: "Replay opening",
   skip: "Skip to message checker",
@@ -189,7 +191,9 @@ Object.assign(copy.en, {
 });
 Object.assign(copy.hi, {
   openingHeading: "थोड़ा ठहरें। ज्यादा सुरक्षित रहें।",
-  openingSub: "एक सांस लें। आइए साथ में जांचें।",
+  introEdition: "समझ की शुरुआत",
+  introMeta: "रुकें / जांचें / सुरक्षित रहें",
+  openingSub: "बात पर भरोसा करने से पहले, समझें।",
   skipOpening: "परिचय छोड़ें",
   replayOpening: "परिचय फिर देखें",
   skip: "संदेश जांच पर जाएं",

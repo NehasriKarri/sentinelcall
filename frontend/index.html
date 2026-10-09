@@ -23,58 +23,90 @@
       aria-labelledby="opening-title"
       aria-describedby="opening-subtitle"
     >
-      <div class="intro-scene" aria-hidden="true">
-        <span class="intro-orbit orbit-one"></span
-        ><span class="intro-orbit orbit-two"></span>
-        <svg class="intro-phone" viewBox="0 0 120 160">
-          <rect
-            x="25"
-            y="8"
-            width="70"
-            height="140"
-            rx="18"
-            fill="#fffef9"
-            stroke="#acc4ae"
-            stroke-width="2"
-          />
-          <path
-            d="M47 20h26"
-            stroke="#b5c8b3"
-            stroke-width="4"
-            stroke-linecap="round"
-          />
-          <rect x="34" y="35" width="52" height="90" rx="9" fill="#e6eee0" />
-          <path
-            class="intro-ring"
-            d="M12 58Q0 80 12 102M108 58Q120 80 108 102"
-            fill="none"
-            stroke="#b9d2b8"
-            stroke-width="3"
-            stroke-linecap="round"
-          />
-        </svg>
-        <svg class="intro-shield" viewBox="0 0 64 72">
-          <path
-            d="M32 4 57 14v21c0 18-25 32-25 32S7 53 7 35V14Z"
-            fill="#2b6357"
-            stroke="#e7efdc"
-            stroke-width="2"
-          />
-          <path
-            class="intro-check"
-            d="m20 34 9 9 17-21"
-            fill="none"
-            stroke="#f4f6e9"
-            stroke-width="4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+      <div class="intro-grid" aria-hidden="true"></div>
+      <div class="intro-meta">
+        <span
+          >SentinelCall<span class="intro-meta-dot"> / </span
+          ><span data-i18n="introEdition"></span></span
+        ><span data-i18n="introMeta"></span>
       </div>
-      <span class="eyebrow intro-eyebrow">SentinelCall</span>
-      <h2 id="opening-title" data-i18n="openingHeading"></h2>
-      <p id="opening-subtitle" data-i18n="openingSub"></p>
-      <button id="skip-opening" data-i18n="skipOpening" autofocus></button>
+      <div class="signal-field" aria-hidden="true">
+        <div class="signal-fragment fragment-1">
+          <svg viewBox="0 0 48 48">
+            <path d="M8 9h32v24H22l-9 7v-7H8Z" />
+            <path d="M15 17h18M15 24h12" />
+          </svg>
+          <div class="fragment-lines"><i></i><i></i><i></i></div>
+          <span class="fragment-corner">01</span>
+        </div>
+        <div class="signal-fragment fragment-2">
+          <svg viewBox="0 0 48 48">
+            <rect x="14" y="5" width="21" height="38" rx="5" />
+            <path d="M21 11h7M22 36h4" />
+          </svg>
+          <div class="fragment-lines"><i></i><i></i><i></i></div>
+          <span class="fragment-corner">02</span>
+        </div>
+        <div class="signal-fragment fragment-3">
+          <svg viewBox="0 0 48 48">
+            <rect x="11" y="21" width="26" height="21" rx="4" />
+            <path d="M17 21V13a7 7 0 0 1 14 0v8M24 29v5" />
+          </svg>
+          <div class="fragment-lines"><i></i><i></i><i></i></div>
+          <span class="fragment-corner">03</span>
+        </div>
+        <div class="signal-fragment fragment-4">
+          <svg viewBox="0 0 48 48">
+            <path d="m24 6 20 34H4Z" />
+            <path d="M24 18v10M24 33v1" />
+          </svg>
+          <div class="fragment-lines"><i></i><i></i><i></i></div>
+          <span class="fragment-corner">04</span>
+        </div>
+        <div class="signal-fragment fragment-5">
+          <svg viewBox="0 0 48 48">
+            <path d="M8 9h32v24H22l-9 7v-7H8Z" />
+            <path d="M15 17h18M15 24h12" />
+          </svg>
+          <div class="fragment-lines"><i></i><i></i><i></i></div>
+          <span class="fragment-corner">05</span>
+        </div>
+        <div class="signal-fragment fragment-6">
+          <svg viewBox="0 0 48 48">
+            <rect x="11" y="21" width="26" height="21" rx="4" />
+            <path d="M17 21V13a7 7 0 0 1 14 0v8M24 29v5" />
+          </svg>
+          <div class="fragment-lines"><i></i><i></i><i></i></div>
+          <span class="fragment-corner">06</span>
+        </div>
+      </div>
+      <div class="intro-center">
+        <div class="cinematic-shield" aria-hidden="true">
+          <span class="shield-aura"></span
+          ><svg viewBox="0 0 64 72">
+            <path
+              class="shield-outline"
+              d="M32 4 57 14v21c0 18-25 32-25 32S7 53 7 35V14Z"
+            />
+            <path class="shield-tick" d="m20 34 9 9 17-21" />
+          </svg>
+        </div>
+        <h2 id="opening-title" class="intro-wordmark">
+          <span>Sentinel</span><em>Call<span class="intro-period">.</span></em>
+        </h2>
+        <div class="intro-subtitle-mask">
+          <p id="opening-subtitle" data-i18n="openingSub"></p>
+        </div>
+      </div>
+      <div class="intro-bottom">
+        <span data-i18n="openingHeading"></span
+        ><button id="skip-opening" autofocus>
+          <span data-i18n="skipOpening"></span
+          ><span aria-hidden="true"> ↗</span>
+        </button>
+      </div>
+      <div class="intro-progress" aria-hidden="true"><span></span></div>
+      <div class="intro-wipe" aria-hidden="true"></div>
     </dialog>
     <a class="skip-link" href="#checker" data-i18n="skip"></a>
     <main class="wrap">

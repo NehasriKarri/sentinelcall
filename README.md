@@ -73,7 +73,9 @@ At threshold 65, the current offline holdout result is 11 true positives, 0 fals
 
 ## Opening animation
 
-A short phone-to-shield welcome plays once per tab (about 2.3 seconds). Skip it with the button or Escape; replay it from the footer. Both languages are supported. Reduced-motion preferences bypass the sequence, and a preference change during playback closes it immediately. Native dialog behavior keeps background controls inert and restores focus on dismissal. No audio or new dependency is used.
+A four-second, full-screen opening takes inspiration from Katran's fragment/convergence/wipe choreography. Six message fragments fly in, converge into a shield, and give way to a large SentinelCall wordmark. A sage colour wipe lifts away to reveal the hero with staggered typography. It uses native CSS animations, not a new runtime dependency.
+
+It plays once per tab. Skip it immediately with the button or Escape; replay it from the footer. Both languages are supported. Reduced-motion preferences bypass the sequence, and changing that preference during playback closes it immediately. Native dialog behavior keeps background controls inert and restores focus on dismissal. Scroll locking and timers are cleaned up on every exit. There is no audio and the animation does not imply a real scan or live-call capture.
 
 ## Frontend assets and samples
 
