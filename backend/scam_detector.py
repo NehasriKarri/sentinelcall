@@ -26,10 +26,21 @@ import re
 from dataclasses import dataclass, field
 
 import requests
+import time
+from pydantic import BaseModel, Field, ConfigDict
+
+class LLMOutput(BaseModel):
+    model_config = ConfigDict(strict=True, extra="forbid")
+    llm_score: int = Field(ge=0, le=100)
+    explanation: str = Field(min_length=1, max_length=2000)
+    recommended_action: str = Field(min_length=1, max_length=1000)
+
+class ReasoningUnavailable(Exception):
+    pass
 
 from models import AnalyzeResponse, FlaggedPhrase
 
-RULE_PATTERNS: dict[str, tuple[int, list[str]]] = {
+ENGLISH_PATTERNS: dict[str, tuple[int, list[str]]] = {
     "otp_or_pin_request": (
         30,
         [r"\botp\b", r"\bpin\b", r"one[\s-]?time password", r"cvv", r"card number"],
@@ -76,44 +87,79 @@ class RuleResult:
     score: int
     categories: list[str] = field(default_factory=list)
     flagged: list[FlaggedPhrase] = field(default_factory=list)
+    language: str = "en"
 
 
-def rule_based_score(transcript: str) -> RuleResult:
-    text = transcript.lower()
-    total = 0
-    categories: list[str] = []
-    flagged: list[FlaggedPhrase] = []
+def normalize_with_spans(text: str):
+    """Return normalized text plus original character spans for safe highlighting."""
+    chars, spans = [], []
+    for i, char in enumerate(text):
+        for lowered in char.lower():
+            chars.append(lowered if lowered.isalnum() or lowered in "'" or '\u0900' <= lowered <= '\u097f' else ' ')
+            spans.append((i, i + 1))
+    value = ''.join(chars)
+    for pattern, replacement in [(r"\bo[ .-]*t[ .-]*p\b|\boh\s+tee\s+pee\b|ओ\s*टी\s*पी", 'otp'),
+                                  (r"\bp[ .-]+i[ .-]+n\b", 'pin'),
+                                  (r"\bc[ .-]+v[ .-]+v\b", 'cvv')]:
+        for match in reversed(list(re.finditer(pattern, value))):
+            a, b = match.span()
+            span = (spans[a][0], spans[b-1][1])
+            value = value[:a] + replacement + value[b:]
+            spans[a:b] = [span] * len(replacement)
+    chars, mapped = [], []
+    for i, char in enumerate(value):
+        if char.isspace():
+            if not chars or chars[-1] == ' ': continue
+            char = ' '
+        chars.append(char); mapped.append(spans[i])
+    if chars and chars[-1] == ' ': chars.pop(); mapped.pop()
+    return ''.join(chars), mapped
 
-    for category, (weight, patterns) in RULE_PATTERNS.items():
-        hit = False
-        for pattern in patterns:
-            match = re.search(pattern, text)
-            if match:
-                hit = True
-                flagged.append(
-                    FlaggedPhrase(
-                        phrase=match.group(0),
-                        category=category,
-                        reason=_category_reason(category),
-                    )
-                )
-                break
-        if hit:
-            total += weight
-            categories.append(category)
 
-    return RuleResult(score=min(total, 100), categories=categories, flagged=flagged)
+def normalize_transcript(text: str) -> str:
+    return normalize_with_spans(text)[0]
 
 
-def _category_reason(category: str) -> str:
-    return {
-        "otp_or_pin_request": "Legitimate banks and government bodies never ask for OTP, PIN, or CVV over a call.",
-        "impersonation_of_authority": "Claims to be a government or law-enforcement body — a common scam script.",
-        "urgency_pressure": "Manufactured urgency is used to stop the target from thinking it through.",
-        "payment_or_transfer_request": "Asks for money, a fee, or a transfer — the actual goal of most scams.",
-        "threat_of_consequence": "Threatens arrest or legal action to induce panic and compliance.",
-        "secrecy_or_isolation": "Asks the target to keep the call secret, cutting off outside advice.",
-    }.get(category, "Matches a known scam pattern.")
+HINDI_PATTERNS = {
+    "otp_or_pin_request": [r"ओटीपी|पिन|सीवीवी|गुप्त कोड", r"otp batao|pin batao"],
+    "impersonation_of_authority": [r"पुलिस|आरबीआई|सीबीआई|साइबर क्राइम|कस्टम विभाग", r"police se|rbi se|cbi se|customs se"],
+    "urgency_pressure": [r"तुरंत|अभी|जल्दी|आखिरी चेतावनी|खाता बंद", r"turant|abhi|jaldi|aakhri chetavani"],
+    "payment_or_transfer_request": [r"पैसे (भेजो|भेजें|ट्रांसफर)|पैसा ट्रांसफर|जुर्माना|शुल्क", r"pais[ae] (transfer karo|bhejo)|paise bheje|jurmana|shulk"],
+    "threat_of_consequence": [r"गिरफ्तार|गिरफ़्तार|गिरफ्तारी|कानूनी कार्रवाई|वारंट|खाता बंद", r"arrest ho jaoge|giraftar|kanooni karwai|khata band"],
+    "secrecy_or_isolation": [r"किसी को (मत बताना|न बताएं)|गुप्त रख|फोन मत काट", r"kisi ko mat bata|gupt rakho|phone mat kaat"],
+}
+REASONS = {
+    "otp_or_pin_request": ("Sensitive authentication details are mentioned; never share them with callers.", "संवेदनशील सुरक्षा जानकारी का उल्लेख है; कॉल करने वाले को यह न दें।"),
+    "impersonation_of_authority": ("An authority is mentioned; verify the caller independently.", "अधिकारी होने का दावा है; स्वतंत्र रूप से पहचान सत्यापित करें।"),
+    "urgency_pressure": ("Urgency can pressure you into acting without checking.", "जल्दबाजी का दबाव बिना जांचे कदम उठवा सकता है।"),
+    "payment_or_transfer_request": ("A payment or transfer is mentioned; verify before paying.", "भुगतान या ट्रांसफर का उल्लेख है; पहले सत्यापन करें।"),
+    "threat_of_consequence": ("Threats can be used to induce panic.", "धमकी देकर डर पैदा किया जा सकता है।"),
+    "secrecy_or_isolation": ("Secrecy cuts off advice from people you trust.", "गुप्त रखने का दबाव भरोसेमंद लोगों की सलाह से दूर करता है।"),
+}
+RULE_CONFIG = {category: {"weight": weight, "languages": {
+    "en": {"patterns": patterns, "explanation": REASONS[category][0]},
+    "hi": {"patterns": HINDI_PATTERNS[category], "explanation": REASONS[category][1]},
+}} for category, (weight, patterns) in ENGLISH_PATTERNS.items()}
+
+
+def rule_based_score(transcript: str, language_hint: str | None = None) -> RuleResult:
+    text, spans = normalize_with_spans(transcript)
+    total, categories, flagged = 0, [], []
+    for category, config in RULE_CONFIG.items():
+        matches = []
+        for rules in config["languages"].values():
+            for pattern in rules["patterns"]:
+                matches.extend(re.finditer(pattern, text))
+        if not matches: continue
+        total += config["weight"]; categories.append(category)
+        seen = set()
+        for match in matches:
+            a, b = spans[match.start()][0], spans[match.end()-1][1]
+            if (a,b) in seen: continue
+            seen.add((a,b))
+            flagged.append(FlaggedPhrase(phrase=transcript[a:b], start=a, end=b, category=category,
+                reason=config["languages"][language_hint or "en"]["explanation"]))
+    return RuleResult(min(total, 100), categories, flagged)
 
 
 SYSTEM_PROMPT = """You are a scam-call analyst for SentinelCall, a consumer safety tool.
@@ -132,7 +178,7 @@ failed payment, a delivery confirmation, a friend asking for help) as scams just
 they mention money or urgency. Judge intent and context, not just the presence of trigger words.
 """
 
-GROQ_MODEL = "openai/gpt-oss-120b"
+GROQ_MODEL = "llama-3.1-8b-instant"
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 
@@ -154,24 +200,26 @@ def llm_analysis(transcript: str, rule_result: RuleResult) -> dict:
         f"Rule-based score: {rule_result.score}/100"
     )
 
-    response = requests.post(
-        GROQ_URL,
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-        json={
-            "model": GROQ_MODEL,
-            "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": user_message},
-            ],
-            "temperature": 0.2,
-            "response_format": {"type": "json_object"},
-        },
-        timeout=20,
-    )
-    response.raise_for_status()
-    text = response.json()["choices"][0]["message"]["content"].strip()
-    text = re.sub(r"^```json|```$", "", text, flags=re.MULTILINE).strip()
-    return json.loads(text)
+    for attempt in range(3):
+        try:
+            response = requests.post(GROQ_URL,
+                headers={"Authorization": f"Bearer {api_key}"},
+                json={"model": os.getenv("GROQ_MODEL", GROQ_MODEL),
+                      "messages": [{"role": "system", "content": SYSTEM_PROMPT +
+                          (" Respond in Hindi." if rule_result.language == "hi" else " Respond in English.")},
+                                   {"role": "user", "content": user_message}],
+                      "temperature": 0.2, "max_tokens": 700,
+                      "response_format": {"type": "json_object"}}, timeout=(3, 10))
+            if response.status_code == 404:
+                raise ReasoningUnavailable("Groq model is invalid or unavailable. Check GROQ_MODEL.")
+            if response.status_code in (429, 500, 502, 503, 504) and attempt < 2:
+                time.sleep(0.5 * 2 ** attempt); continue
+            response.raise_for_status()
+            content = response.json()["choices"][0]["message"]["content"]
+            return LLMOutput.model_validate_json(content).model_dump()
+        except (requests.Timeout, requests.ConnectionError):
+            if attempt == 2: raise ReasoningUnavailable("Groq timed out or could not be reached.") from None
+            time.sleep(0.5 * 2 ** attempt)
 
 
 def _risk_level(score: int) -> str:
@@ -182,8 +230,9 @@ def _risk_level(score: int) -> str:
     return "low"
 
 
-def analyze(transcript: str, use_llm: bool = True) -> AnalyzeResponse:
-    rule_result = rule_based_score(transcript)
+def analyze(transcript: str, use_llm: bool = True, language_hint: str | None = None) -> AnalyzeResponse:
+    rule_result = rule_based_score(transcript, language_hint)
+    rule_result.language = language_hint or "en"
 
     llm_score: int | None = None
     explanation = ""
@@ -191,15 +240,13 @@ def analyze(transcript: str, use_llm: bool = True) -> AnalyzeResponse:
 
     if use_llm:
         try:
-            llm_out = llm_analysis(transcript, rule_result)
+            llm_out = LLMOutput.model_validate(llm_analysis(transcript, rule_result)).model_dump()
             llm_score = int(llm_out.get("llm_score", rule_result.score))
             explanation = llm_out.get("explanation", "")
             recommended_action = llm_out.get("recommended_action", "")
         except Exception as exc:
-            explanation = (
-                "AI reasoning layer was unavailable, so this verdict is based on "
-                f"rule-based pattern matching only. ({exc})"
-            )
+            detail = str(exc) if isinstance(exc, ReasoningUnavailable) else "Groq is unavailable or returned invalid data."
+            explanation = "AI reasoning unavailable; using pattern matching only. " + detail
             recommended_action = (
                 "Treat with caution and verify independently before acting."
                 if rule_result.score >= 35
@@ -223,6 +270,11 @@ def analyze(transcript: str, use_llm: bool = True) -> AnalyzeResponse:
                 else "No action needed, but stay alert to requests for money or OTPs."
             )
 
+    if language_hint == "hi" and llm_score is None:
+        explanation = "AI विश्लेषण उपलब्ध नहीं है; यह परिणाम केवल नियमों पर आधारित है।" if use_llm else "यह परिणाम केवल नियमों पर आधारित है।"
+        if use_llm and 'detail' in locals() and 'GROQ_MODEL' in detail:
+            explanation += " Groq मॉडल अमान्य या अनुपलब्ध है। GROQ_MODEL जांचें।"
+        recommended_action = "OTP, PIN या पैसे न दें। स्वतंत्र रूप से सत्यापन करें।" if final_score >= 35 else "प्रमुख संकेत नहीं मिले; फिर भी सतर्क रहें।"
     return AnalyzeResponse(
         risk_level=_risk_level(final_score),
         risk_score=final_score,
