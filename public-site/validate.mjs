@@ -1,0 +1,7 @@
+import fs from 'node:fs/promises';import assert from 'node:assert/strict';import {createEngine} from './worker/engine.mjs';
+const data=JSON.parse(await fs.readFile(new URL('./worker/data.json',import.meta.url)));const engine=createEngine(data);const rows=JSON.parse(await fs.readFile(new URL('./parity.json',import.meta.url)));for(const [i,r] of rows.entries()){const actual=engine.rules(r.transcript);assert.deepEqual(actual,{score:r.score,categories:r.categories,flagged:r.flagged},`Python parity case ${i}`);}
+const source=await fs.readFile(new URL('./dist/server/index.js',import.meta.url),'utf8');const {default:worker}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+for(const route of ['/','/config.js','/assets/sentinel-hero.jpg','/health','/samples'])assert.equal((await worker.fetch(new Request('https://example.org'+route))).status,200);
+const result=await worker.fetch(new Request('https://example.org/analyze',{method:'POST',body:JSON.stringify({transcript:'Share your OTP immediately. Transfer the money right now.',language_hint:'en'})}));assert.equal(result.status,200);assert.equal((await result.json()).risk_level,'high');
+assert.equal((await worker.fetch(new Request('https://example.org/analyze',{method:'POST',body:JSON.stringify({transcript:' '})}))).status,422);
+console.log(`Passed ${rows.length} Python rule parity cases and Worker route checks`);
