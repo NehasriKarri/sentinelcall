@@ -97,3 +97,27 @@ def test_missing_translation_fails_closed(monkeypatch):
 def test_use_llm_requires_a_boolean():
     with pytest.raises(ValueError):
         AnalyzeRequest(transcript="x", use_llm="false")
+
+
+def test_api_requires_explicit_ai_opt_in(monkeypatch):
+    from fastapi.testclient import TestClient
+    import main
+
+    main.buckets.clear()
+    provider = Mock(
+        return_value={
+            "llm_score": 10,
+            "explanation": "Context",
+            "recommended_action": "Verify",
+            "explanation_hi": "संदर्भ",
+            "recommended_action_hi": "सत्यापन करें",
+        }
+    )
+    monkeypatch.setattr(detector, "llm_analysis", provider)
+    client = TestClient(main.app)
+    result = client.post("/analyze", json={"transcript": "Hello"})
+    assert result.json()["llm_status"] == "disabled"
+    provider.assert_not_called()
+    result = client.post("/analyze", json={"transcript": "Hello", "use_llm": True})
+    assert result.json()["llm_status"] == "used"
+    provider.assert_called_once()

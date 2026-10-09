@@ -36,36 +36,46 @@ No build step. For browsers requiring an HTTP origin for microphone access, opti
 | `RATE_LIMIT_PER_MINUTE` | `30` | Checks per client IP per rolling minute, per process |
 | `window.SENTINELCALL_CONFIG.API_BASE` | `http://localhost:8000` | Edit `frontend/config.js` to point to another API |
 
-Model availability changes: consult [Groq supported models](https://console.groq.com/docs/models). A model 404 produces an explicit `GROQ_MODEL` message and a rule-only verdict. Requests have three attempts at most, a 3-second connection timeout, 10-second read timeout, and exponential backoff for transient connection errors, 429s and selected 5xx responses. Strict JSON validation rejects invalid scores or missing fields. Errors never expose raw provider responses or credentials.
+Model availability changes: consult [Groq supported models](https://console.groq.com/docs/models). A model 404 or a recognized decommissioned-model error produces an explicit `GROQ_MODEL` message and a rule-only verdict. Requests have three attempts at most, a 3-second connection timeout, 10-second read timeout, and exponential backoff for transient connection errors, 429s and selected 5xx responses. Strict JSON validation rejects invalid scores or missing fields. Errors never expose raw provider responses or credentials.
 
 ## API
 
-- `POST /analyze`: `{"transcript":"...", "language_hint":"en"}`. `language_hint` accepts `en` or `hi` and is optional. Transcript must be nonblank and at most 10,000 characters. Body limit: 128 KB.
+- `POST /analyze`: `{"transcript":"...", "language_hint":"en", "use_llm":false}`. `language_hint` accepts `en` or `hi` and is optional. `use_llm` defaults to `false`; set it to `true` to authorize sending this transcript to Groq. Transcript must be nonblank and at most 10,000 characters. Body limit: 128 KB.
 - `GET /samples`: five examples, three scams and two genuine calls.
 - `GET /samples/{id}`: one example.
 - `GET /health`: liveness. Interactive docs: http://localhost:8000/docs.
 
-Errors use `{"error":{"code":"...","message":"..."}}`, including validation, unknown routes, body limits, and rate limits (429 with `Retry-After`). An unavailable AI provider is a successful check with a rule-only explanation and `llm_score: null`.
+Errors use `{"error":{"code":"...","message":"..."}}`, including validation, unknown routes, body limits, and rate limits (429 with `Retry-After`). An unavailable AI provider is a successful check with a rule-only explanation and `llm_score: null`. Responses also include complete `localized.en` and `localized.hi` explanations/actions, and `llm_status` (`used`, `disabled`, `missing_key`, `invalid_model`, `invalid_output`, or `unavailable`). The language toggle switches full results immediately without another network request.
 
 ## Detection and privacy
 
-`backend/scam_detector.py` holds `RULE_CONFIG`, with patterns, weights, and explanations by category and language. Each category counts once. Normalization collapses common spoken/spaced OTP forms, lowercases, and cleans whitespace/punctuation while preserving original offsets for highlighting. Flags use Python character offsets; the frontend converts them for JavaScript Unicode indexing.
+`backend/scam_detector.py` holds `RULE_CONFIG`, with patterns, weights, and explanations by category and language. Each category counts once. Sensitive-detail and payment categories require a request/action context. Protective advice is suppressed within its clause, while a later demand is still scored. This handles common negation, not arbitrary conversational reasoning. Normalization collapses common spoken/spaced OTP forms, lowercases, and cleans whitespace/punctuation while preserving original offsets for highlighting. Flags use Python character offsets; the frontend converts them for JavaScript Unicode indexing.
 
 Final score is `max(rule_score, round(0.4 * rule_score + 0.6 * llm_score))`; without AI it is the rule score. Low: below 35, caution: 35–64, high: 65+. Scores are heuristics, not calibrated probabilities.
 
-The backend does not persist transcripts. Request logs contain only method, route template, status, and duration. Uvicorn's default access log can include paths and IPs; use `--no-access-log` if desired. With AI enabled, transcripts are sent to Groq. Browser speech recognition may send audio to the browser vendor's service. Recent checks store up to ten transcripts in localStorage only; clear history on shared devices. Storage failures do not stop analysis.
+The backend does not persist transcripts. Request logs contain only method, route template, status, and duration. Uvicorn's default access log can include paths and IPs; use `--no-access-log` if desired. With AI enabled, transcripts are sent to Groq. Browser speech recognition may send audio to the browser vendor's service. AI is off by default in the frontend and API. The frontend asks separately whether to save each check; saving is unchecked again after success. Only saved checks store up to ten transcripts in localStorage. Clear history on shared devices. Storage failures do not stop analysis.
 
 ## Verification
 
 ```sh
 pytest -q
 python evaluation/evaluate.py
-python evaluation/evaluate.py --threshold 35
+python evaluation/evaluate.py --split development
+python evaluation/evaluate.py --threshold 35 --show-errors
+python scripts/sync_samples.py --check
 ```
 
 Tests run offline with mocked Groq requests: normalization and original spans, every rule category in three language forms, score floors, malformed JSON/schema, model failures, retries, samples, validation, private logs, body limits, and rate limits. GitHub Actions runs them on Python 3.11–3.13.
 
-The 25-example bilingual evaluation set is a small, hand-written smoke dataset, including safety advice and benign calls. Precision and recall at the chosen threshold describe only this set; they are not estimates of real-world performance.
+The evaluation data has 50 development examples and a separate 30-example synthetic holdout, with English, Hindi, and Hinglish, safety advice, benign notifications, transcription errors, and subtle prize scams. The default script evaluates the holdout and reports precision/recall per language; `--show-errors` prints IDs and scenarios without transcripts. Do not tune rules on holdout mistakes. Collect consented, anonymized real-world examples before making deployment accuracy claims.
+
+At threshold 65, the current offline holdout result is 11 true positives, 0 false positives, 4 false negatives, and 15 true negatives: precision 1.000, recall 0.733. Three missed scams are subtle prize scripts; one is a speech-error script. This is a small synthetic test, not a real-world performance estimate.
+
+## Frontend assets and samples
+
+Two original illustrations are bundled as optimized JPEGs under `frontend/assets/` (about 353 KB total). Their final prompts and generation tool are documented in `frontend/assets/README.md`. No image CDN or frontend build is required. Fraunces and Work Sans load from Google Fonts with local serif/sans-serif fallbacks when offline.
+
+Samples are bundled in `frontend/samples.js` so the picker works when the API is unavailable. After changing backend samples, run `python scripts/sync_samples.py`. CI checks that the bundle matches. Analysis still requires the backend; an unavailable API shows a friendly error. Browser speech recognition remains separate from offline text rules and may use the browser vendor's speech service.
 
 ## Docker
 
@@ -78,7 +88,7 @@ The image runs the backend as a non-root user. Open the frontend separately. Sec
 
 ## Browser checks
 
-Check 320/375/390px widths, readable sample options, keyboard focus and native dropdown operation, English/Hindi switching, microphone permissions and stop/error handling, screen-reader verdict announcements, reduced-motion settings, unavailable backend, local history reload/clear, and flags containing HTML or emoji. Re-run a check after changing language for fresh AI reasoning in that language; changing the toggle immediately translates UI text and provides a localized summary of an existing result.
+Check 320/375/390px widths, readable sample options, keyboard focus and native dropdown operation, English/Hindi switching, microphone permissions and stop/error handling, screen-reader verdict announcements, reduced-motion settings, unavailable backend, local history reload/clear, and flags containing HTML or emoji. Changing the language toggle translates the complete stored result, including AI explanations, without another analysis request. Groq output must provide both translations or it falls back to rules.
 
 High-risk checks show the [National Cybercrime Reporting Portal](https://cybercrime.gov.in/) and 1930 for reporting financial cyber fraud in India ([official reporting guidance](https://cybercrime.gov.in/uploadmedia/instructions_citizenreportingcyberfrauds.pdf)).
 

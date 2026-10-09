@@ -15,7 +15,7 @@ class AnalyzeRequest(BaseModel):
         description="Call or message transcript to analyze",
     )
     use_llm: bool = Field(
-        True, strict=True, description="Allow this transcript to be sent to Groq"
+        False, strict=True, description="Allow this transcript to be sent to Groq"
     )
     language_hint: Literal["en", "hi"] | None = Field(
         None, description="Optional language of the transcript, e.g. 'en', 'hi'"
