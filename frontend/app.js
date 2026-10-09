@@ -7,6 +7,11 @@ const copy = {
 };
 let lang = 'en', samples = [], current = null, history = [], recognition = null, recording = false, busy = false;
 const t = key => copy[lang][key];
+const reasons = {
+ en: ['Authentication details mentioned. Never share OTPs or PINs.', 'Authority claim: verify independently.', 'Pressure to act quickly.', 'Payment or transfer mentioned.', 'Threat of consequences.', 'Pressure to keep the call secret.'],
+ hi: ['सुरक्षा जानकारी का उल्लेख है। OTP या PIN न दें।', 'अधिकारी होने का दावा: स्वतंत्र रूप से सत्यापन करें।', 'जल्दी करने का दबाव।', 'भुगतान या ट्रांसफर का उल्लेख।', 'परिणामों की धमकी।', 'कॉल गुप्त रखने का दबाव।']
+};
+const categories = ['otp_or_pin_request','impersonation_of_authority','urgency_pressure','payment_or_transfer_request','threat_of_consequence','secrecy_or_isolation'];
 const historyKey = 'sentinelcall.history.v1';
 try { const saved = JSON.parse(localStorage.getItem(historyKey) || '[]'); if (Array.isArray(saved)) history = saved.filter(x => typeof x.text === 'string' && x.text.length <= 10000 && ['low','medium','high'].includes(x.level) && Number.isFinite(x.score)).slice(0,10); } catch { /* Storage is optional. */ }
 function message(key) { $('error-box').textContent = t(key); $('error-box').hidden = false; }
@@ -37,11 +42,12 @@ function renderResult(data,text) {
  $('verdict-label').textContent = t(data.risk_level); $('verdict-label').className = `risk-${data.risk_level}`;
  $('verdict-sub').textContent = `${t('score')} ${data.risk_score}/100`;
  // The API supplies localized reasoning for the language used for that check.
- $('explanation').textContent = data.explanation; $('action-box-text').textContent = data.recommended_action;
+ $('explanation').textContent = current?.language === lang ? data.explanation : (lang === 'hi' ? 'यह स्कोर पहचाने गए संकेतों और उपलब्ध AI विश्लेषण पर आधारित है। मूल भाषा में पूरा विश्लेषण देखने के लिए वापस बदलें।' : 'This score uses detected signals and any available AI reasoning. Switch back to the check’s original language for its full explanation.'); $('action-box-text').textContent = current?.language === lang ? data.recommended_action : (lang === 'hi' ? 'व्यक्तिगत जानकारी या पैसे देने से पहले स्वतंत्र रूप से सत्यापन करें।' : 'Verify independently before sharing personal details or sending money.');
  $('flag-list').replaceChildren();
- for (const flag of data.flagged_phrases) {const item = document.createElement('p'); item.className='flag-item'; item.textContent=`“${flag.phrase}” — ${flag.reason}`; $('flag-list').append(item);}
+ for (const flag of data.flagged_phrases) {const item = document.createElement('p'); item.className='flag-item'; item.textContent=`“${flag.phrase}” — ${reasons[lang][categories.indexOf(flag.category)] || flag.reason}`; $('flag-list').append(item);}
  if (!data.flagged_phrases.length) $('flag-list').textContent=t('none');
- const ranges = data.flagged_phrases.filter(f => Number.isInteger(f.start) && Number.isInteger(f.end) && f.start >= 0 && f.end > f.start && f.end <= text.length).map(f => [f.start,f.end]).sort((a,b)=>a[0]-b[0]);
+ const points = Array.from(text); const utf16 = [0]; for (const point of points) utf16.push(utf16.at(-1) + point.length);
+ const ranges = data.flagged_phrases.filter(f => Number.isInteger(f.start) && Number.isInteger(f.end) && f.start >= 0 && f.end > f.start && f.end <= text.length).map(f => [utf16[f.start],utf16[f.end]]).sort((a,b)=>a[0]-b[0]);
  const merged=[]; for(const range of ranges) { const last=merged.at(-1); if(last && range[0]<=last[1]) last[1]=Math.max(last[1],range[1]); else merged.push([...range]); }
  const preview=$('highlighted-transcript'); preview.replaceChildren(); let offset=0;
  for(const [a,b] of merged) {preview.append(document.createTextNode(text.slice(offset,a))); const mark=document.createElement('mark'); mark.textContent=text.slice(a,b); preview.append(mark);offset=b;}
@@ -61,7 +67,7 @@ $('analyze-btn').onclick=async()=>{
  if(!text.trim())return message('empty'); if(text.length>10000)return message('long');
  if(recording)recognition.stop(); busy=true; $('analyze-btn').disabled=true; $('record-btn').disabled=true; $('status-hint').textContent=t('loading'); $('result').hidden=true;current=null;
  const requestLang=lang;
- try {const data=await api('/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transcript:text,language_hint:requestLang})});current={data,text};renderResult(data,text);
+ try {const data=await api('/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transcript:text,language_hint:requestLang})});current={data,text,language:requestLang};renderResult(data,text);
  history.unshift({text,score:data.risk_score,level:data.risk_level,time:new Date().toISOString()});history=history.slice(0,10);try{localStorage.setItem(historyKey,JSON.stringify(history));}catch{message('storage');}renderHistory();
  }catch(e){message(e.key);}finally{busy=false;$('analyze-btn').disabled=false;$('record-btn').disabled=false;$('status-hint').textContent='';}
 };

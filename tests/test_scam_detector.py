@@ -23,7 +23,9 @@ def test_clean_transcript_scores_low():
 
 
 def test_otp_request_is_flagged():
-    result = rule_based_score("Please share the OTP sent to your phone to verify your account.")
+    result = rule_based_score(
+        "Please share the OTP sent to your phone to verify your account."
+    )
     assert "otp_or_pin_request" in result.categories
     assert result.score >= 30
 

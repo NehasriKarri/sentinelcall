@@ -1,115 +1,91 @@
 # SentinelCall
 
-**A two-layer AI system that reads a call or message transcript and tells you, in plain English, whether it's a scam — and what to do next.**
+A local demo that checks pasted or browser-transcribed calls and messages for scam signals. Six weighted rule categories cover English, Hindi in Devanagari, and romanized Hinglish. Optional Groq reasoning adds context; the rule score always sets the floor.
 
-Built for [Hackathon Name] under the **Digital Safety & Cybersecurity** track.
+## Run locally
 
-> Scam calls impersonating banks, police, and courier services are one of the most common frauds reported in India today, and they succeed by exploiting urgency and unfamiliarity with official process rather than any technical exploit. SentinelCall targets that gap directly: it reads a transcript the way a careful, experienced person would, and explains its reasoning instead of returning a black-box label.
+Python 3.11+ recommended. From the repository root:
 
----
-
-## How it works
-
-SentinelCall doesn't rely on a single keyword blocklist (easy to fool) or a single LLM call (expensive, non-deterministic, and hard to trust at 100). It combines two layers:
-
-```mermaid
-flowchart LR
-    A[Call / SMS / WhatsApp transcript] --> B[Layer 1: Rule-based scorer]
-    A --> C[Layer 2: LLM reasoning (Groq)]
-    B -- rule score + flagged categories --> D[Score blender]
-    C -- contextual score + explanation --> D
-    D --> E[Final verdict:\nrisk level, score,\nflagged phrases,\nrecommended action]
-```
-
-1. **Rule-based scorer** (`backend/scam_detector.py`) — deterministic, offline, instant. Matches the transcript against known scam "tells": OTP/PIN requests, impersonation of authorities (police, RBI, income tax, cyber-crime cell), manufactured urgency, payment/transfer requests, threats of arrest, and requests for secrecy. This layer needs no API key and is fully unit-tested.
-2. **LLM reasoning layer** (Groq, running Llama/GPT-OSS) — reads the full transcript for *intent*, not just trigger words, so it catches scams that avoid obvious keywords and avoids over-flagging a genuine bank or delivery call that happens to mention money or timing.
-3. **Score blender** — the rule-based score sets a floor, so a transcript with clear scam markers can never be waved through by a bad or unavailable LLM call; the LLM score adds nuance on top. If the API is unreachable, the app degrades gracefully to rule-based-only mode instead of failing.
-
-## Demo
-
-Three sample calls are bundled (`backend/sample_transcripts.py`) so the app can be demoed live without needing a real recording: a "digital arrest" scam, a fake KYC-update call, a fake courier/customs call, and two genuine calls (delivery, bank) to show it doesn't cry wolf.
-
-<!-- Add a screenshot or short GIF of the app here before submitting -->
-
-## Tech stack
-
-| Layer | Choice | Why |
-|---|---|---|
-| Detection logic | Python regex heuristics | Deterministic, testable, zero cost, instant |
-| AI reasoning | Groq API (Llama 3.3 / GPT-OSS) | Context-aware judgment, explains itself in plain language |
-| Backend | FastAPI | Fast to build, automatic OpenAPI docs, async-ready |
-| Frontend | Vanilla HTML/CSS/JS | No build step needed for a hackathon demo; easy to read/extend |
-| Tests | pytest | Rule-based layer is fully covered without needing an API key |
-
-## Project structure
-
-```
-sentinelcall/
-├── backend/
-│   ├── main.py                 # FastAPI app and routes
-│   ├── scam_detector.py        # Rule-based + LLM detection engine
-│   ├── models.py                # Pydantic request/response schemas
-│   └── sample_transcripts.py   # Demo data
-├── frontend/
-│   ├── index.html
-│   ├── style.css
-│   └── app.js
-├── tests/
-│   └── test_scam_detector.py   # Offline, no API key required
-├── requirements.txt
-├── .env.example
-└── README.md
-```
-
-## Setup
-
-```bash
-git clone <your-repo-url>
-cd sentinelcall
-python3 -m venv venv && source venv/bin/activate
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-
 cp .env.example .env
-# edit .env and add your free GROQ_API_KEY (console.groq.com — no card required)
+```
 
-cd backend
+Optionally edit `.env` to add a Groq key. Never commit it. Backend, from `backend/`:
+
+```sh
 uvicorn main:app --reload --port 8000
 ```
 
-Then open `frontend/index.html` directly in a browser (it talks to `http://localhost:8000`).
+Frontend: open `frontend/index.html` directly in a browser. On macOS, from the repository root:
 
-## Running tests
-
-```bash
-pytest tests/ -v
+```sh
+open frontend/index.html
 ```
 
-All tests run offline against the rule-based layer, so they pass with no API key and are safe to run in CI.
+No build step. For browsers requiring an HTTP origin for microphone access, optionally run `python3 -m http.server 5500 --directory frontend`, then open http://localhost:5500. Speech support and permissions vary by browser.
+
+## Configuration
+
+| Setting | Default | Purpose |
+| --- | --- | --- |
+| `GROQ_API_KEY` | unset | Optional Groq reasoning; without it checks use rules |
+| `GROQ_MODEL` | `llama-3.1-8b-instant` | Groq model ID; select a model available to your free-tier account |
+| `RATE_LIMIT_PER_MINUTE` | `30` | Checks per client IP per rolling minute, per process |
+| `window.SENTINELCALL_CONFIG.API_BASE` | `http://localhost:8000` | Edit `frontend/config.js` to point to another API |
+
+Model availability changes: consult [Groq supported models](https://console.groq.com/docs/models). A model 404 produces an explicit `GROQ_MODEL` message and a rule-only verdict. Requests have three attempts at most, a 3-second connection timeout, 10-second read timeout, and exponential backoff for transient connection errors, 429s and selected 5xx responses. Strict JSON validation rejects invalid scores or missing fields. Errors never expose raw provider responses or credentials.
 
 ## API
 
-| Endpoint | Method | Description |
-|---|---|---|
-| `/analyze` | POST | `{"transcript": "..."}` → full verdict (risk level, score, flagged phrases, explanation, recommended action) |
-| `/samples` | GET | List of bundled demo transcripts |
-| `/samples/{id}` | GET | A single demo transcript |
-| `/health` | GET | Liveness check |
+- `POST /analyze`: `{"transcript":"...", "language_hint":"en"}`. `language_hint` accepts `en` or `hi` and is optional. Transcript must be nonblank and at most 10,000 characters. Body limit: 128 KB.
+- `GET /samples`: five examples, three scams and two genuine calls.
+- `GET /samples/{id}`: one example.
+- `GET /health`: liveness. Interactive docs: http://localhost:8000/docs.
 
-Interactive docs are auto-generated by FastAPI at `http://localhost:8000/docs`.
+Errors use `{"error":{"code":"...","message":"..."}}`, including validation, unknown routes, body limits, and rate limits (429 with `Retry-After`). An unavailable AI provider is a successful check with a rule-only explanation and `llm_score: null`.
 
-## Design decisions worth knowing
+## Detection and privacy
 
-- **Why blend two layers instead of just asking an LLM?** A pure-LLM approach can miss obvious scams to a single bad response, and can't be unit tested deterministically. Blending means the system is provably safe on known scam patterns (covered by tests) while still getting the contextual judgment only an LLM can give.
-- **Why not just a keyword blocklist?** Keyword lists are trivially defeated by rewording, and produce a label with no explanation. Real scam calls are also identifiable by *structure* (build trust → create urgency → request secrecy → request money), which is exactly what the LLM layer is asked to reason about.
-- **Graceful degradation:** if the Groq API is unavailable mid-demo, the app doesn't crash — it falls back to the rule-based verdict with a note, which is both a UX safeguard and a technical talking point for judges.
+`backend/scam_detector.py` holds `RULE_CONFIG`, with patterns, weights, and explanations by category and language. Each category counts once. Normalization collapses common spoken/spaced OTP forms, lowercases, and cleans whitespace/punctuation while preserving original offsets for highlighting. Flags use Python character offsets; the frontend converts them for JavaScript Unicode indexing.
 
-## Roadmap
+Final score is `max(rule_score, round(0.4 * rule_score + 0.6 * llm_score))`; without AI it is the rule score. Low: below 35, caution: 35–64, high: 65+. Scores are heuristics, not calibrated probabilities.
 
-- [ ] Speech-to-text input (Whisper) for live audio, not just pasted text
-- [ ] Browser extension / WhatsApp bot front-end
-- [ ] Confusion-matrix evaluation against a larger labeled scam-call dataset
-- [ ] Multi-language support (Hindi, Tamil, etc.)
+The backend does not persist transcripts. Request logs contain only method, route template, status, and duration. Uvicorn's default access log can include paths and IPs; use `--no-access-log` if desired. With AI enabled, transcripts are sent to Groq. Browser speech recognition may send audio to the browser vendor's service. Recent checks store up to ten transcripts in localStorage only; clear history on shared devices. Storage failures do not stop analysis.
 
-## License
+## Verification
 
-MIT — see `LICENSE`.
+```sh
+pytest -q
+python evaluation/evaluate.py
+python evaluation/evaluate.py --threshold 35
+```
+
+Tests run offline with mocked Groq requests: normalization and original spans, every rule category in three language forms, score floors, malformed JSON/schema, model failures, retries, samples, validation, private logs, body limits, and rate limits. GitHub Actions runs them on Python 3.11–3.13.
+
+The 25-example bilingual evaluation set is a small, hand-written smoke dataset, including safety advice and benign calls. Precision and recall at the chosen threshold describe only this set; they are not estimates of real-world performance.
+
+## Docker
+
+```sh
+docker build -t sentinelcall .
+docker run --rm -p 8000:8000 --env-file .env sentinelcall
+```
+
+The image runs the backend as a non-root user. Open the frontend separately. Secrets are excluded from the build context.
+
+## Browser checks
+
+Check 320/375/390px widths, readable sample options, keyboard focus and native dropdown operation, English/Hindi switching, microphone permissions and stop/error handling, screen-reader verdict announcements, reduced-motion settings, unavailable backend, local history reload/clear, and flags containing HTML or emoji. Re-run a check after changing language for fresh AI reasoning in that language; changing the toggle immediately translates UI text and provides a localized summary of an existing result.
+
+High-risk checks show the [National Cybercrime Reporting Portal](https://cybercrime.gov.in/) and 1930 for reporting financial cyber fraud in India ([official reporting guidance](https://cybercrime.gov.in/uploadmedia/instructions_citizenreportingcyberfrauds.pdf)).
+
+## Limitations
+
+This app analyzes pasted or microphone-transcribed text. **It does not capture live phone calls.** False positives and missed scams are possible, particularly with negation, unfamiliar phrasing, mixed languages, or inaccurate transcription. The rule floor means AI cannot lower a false-positive rule score. A low score does not prove safety. No live Groq integration is required for tests.
+
+CORS is permissive for local file access. Rate limits are bounded, in-memory and per process, reset on restart, and do not trust forwarded IP headers. Public deployment needs restricted origins, shared limits and appropriate reverse-proxy configuration. API request bodies are bounded before parsing; this is not a complete public abuse-protection system.
+
+MIT licensed. See LICENSE.

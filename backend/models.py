@@ -8,13 +8,21 @@ RiskLevel = Literal["low", "medium", "high"]
 
 
 class AnalyzeRequest(BaseModel):
-    transcript: str = Field(..., min_length=1, max_length=10000, description="Call or message transcript to analyze")
-    language_hint: Literal["en", "hi"] | None = Field(None, description="Optional language of the transcript, e.g. 'en', 'hi'")
+    transcript: str = Field(
+        ...,
+        min_length=1,
+        max_length=10000,
+        description="Call or message transcript to analyze",
+    )
+    language_hint: Literal["en", "hi"] | None = Field(
+        None, description="Optional language of the transcript, e.g. 'en', 'hi'"
+    )
 
     @field_validator("transcript")
     @classmethod
     def nonblank(cls, value):
-        if not value.strip(): raise ValueError("Transcript must not be blank")
+        if not value.strip():
+            raise ValueError("Transcript must not be blank")
         return value
 
 

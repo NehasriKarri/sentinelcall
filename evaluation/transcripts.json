@@ -1,0 +1,127 @@
+[
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "This is Officer Sharma from Cyber Crime Branch. Your Aadhaar number has been used in a money laundering case. You are under digital arrest. Do not disconnect this call or inform anyone, including your family. To avoid arrest, you must transfer your savings to a government verification account within 30 minutes for verification. Share the OTP sent to your phone to proceed."
+  },
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "Sir, this is calling from your bank's KYC department. Your account will be blocked within 2 hours if you do not update your KYC right now. Please share the OTP you just received and your debit card number so I can complete the update for you immediately."
+  },
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "Hello, this is FedEx customer service. A parcel under your name containing illegal items was intercepted by customs. To avoid legal action and a case being filed, you need to pay a processing fee of 2000 rupees via Google Pay right now. This is urgent, please do not hang up."
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "Hi, this is Ramesh from the delivery service. I'm outside your building with your order, but the gate code isn't working. Could you come down or share the correct code? I'll wait five minutes."
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "Good afternoon, this is your bank calling about the credit card application you submitted last week. We need to confirm your current employer name and monthly income to proceed. You're welcome to call us back on the number printed on your card if you'd like to verify this call first."
+  },
+  {
+    "language": "hi",
+    "label": "scam",
+    "transcript": "पुलिस से बोल रहे हैं। तुरंत पैसे भेजो नहीं तो गिरफ्तार हो जाओगे। किसी को मत बताना।"
+  },
+  {
+    "language": "hi",
+    "label": "scam",
+    "transcript": "ओ टी पी बताओ अभी नहीं तो खाता बंद हो जाएगा।"
+  },
+  {
+    "language": "hi",
+    "label": "scam",
+    "transcript": "सीबीआई से हैं। जुर्माना दो अभी। वारंट है।"
+  },
+  {
+    "language": "hi",
+    "label": "scam",
+    "transcript": "कस्टम विभाग से कॉल है। तुरंत शुल्क दो। कानूनी कार्रवाई होगी।"
+  },
+  {
+    "language": "hi",
+    "label": "scam",
+    "transcript": "पिन बताओ अभी। गुप्त रखो। पैसे भेजो।"
+  },
+  {
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "police se bol rahe hain paisa transfer karo abhi arrest ho jaoge"
+  },
+  {
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "otp batao jaldi khata band ho jayega kisi ko mat batana"
+  },
+  {
+    "language": "hinglish",
+    "label": "scam",
+    "transcript": "cbi se hain jurmana do turant arrest ho jaoge"
+  },
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "Share o.t.p. immediately or your account will be blocked."
+  },
+  {
+    "language": "en",
+    "label": "scam",
+    "transcript": "Pay a fine right now or face arrest. Do not tell anyone."
+  },
+  {
+    "language": "hi",
+    "label": "clean",
+    "transcript": "आपका सामान पहुंच गया है। कृपया नीचे आ जाएं।"
+  },
+  {
+    "language": "hi",
+    "label": "clean",
+    "transcript": "कल दोपहर खाने पर मिलते हैं।"
+  },
+  {
+    "language": "hi",
+    "label": "clean",
+    "transcript": "आपके आवेदन की स्थिति वेबसाइट पर देख सकते हैं।"
+  },
+  {
+    "language": "hinglish",
+    "label": "clean",
+    "transcript": "kal lunch par milte hain"
+  },
+  {
+    "language": "hinglish",
+    "label": "clean",
+    "transcript": "aapka parcel gate par hai neeche aa jaiye"
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "Your appointment is confirmed for Monday."
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "Never share your OTP with anyone."
+  },
+  {
+    "language": "hi",
+    "label": "clean",
+    "transcript": "किसी को अपना ओटीपी न दें।"
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "Please call the number on your card to verify."
+  },
+  {
+    "language": "en",
+    "label": "clean",
+    "transcript": "Your refund will arrive in five business days."
+  }
+]
